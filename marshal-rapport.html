@@ -241,8 +241,8 @@
     } else {
       try {
         await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST", mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify(payload)
         });
         showSuccess();
