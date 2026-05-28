@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Baan Marshal Rapport</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a; --green-mid: #2d5a3d; --green-light: #4a8c5c;
+    --green-pale: #e8f2eb; --gold: #c9a84c; --gold-light: #f0d98a;
+    --cream: #faf7f0; --text-dark: #1a2015; --text-mid: #4a5545;
+    --text-light: #8a9585; --white: #ffffff;
+    --shadow: 0 4px 24px rgba(26,58,42,0.12); --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--green-deep); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0 0 60px 0; }
+  .header { width: 100%; background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 100%); padding: 36px 24px 28px; text-align: center; border-bottom: 2px solid var(--gold); position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; border: 2px solid rgba(201,168,76,0.18); }
+  .header::after { content: ''; position: absolute; bottom: -60px; left: -30px; width: 140px; height: 140px; border-radius: 50%; border: 2px solid rgba(201,168,76,0.10); }
+  .flag-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--cream); letter-spacing: 0.5px; line-height: 1.2; }
+  .header p { color: var(--gold-light); font-size: 13px; margin-top: 6px; font-weight: 300; letter-spacing: 0.5px; }
+  .card { background: var(--cream); border-radius: var(--radius); box-shadow: var(--shadow); width: calc(100% - 32px); max-width: 480px; margin: 24px auto 0; padding: 28px 24px; }
+  .section-label { font-family: 'Playfair Display', serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.25); }
+  .field { margin-bottom: 22px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 7px; letter-spacing: 0.3px; }
+  .field label .req { color: var(--gold); margin-left: 2px; }
+  select, input[type="text"], textarea { width: 100%; padding: 13px 16px; border: 1.5px solid #d5e0d8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text-dark); background: var(--white); appearance: none; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a8c5c' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+  select:focus, input:focus, textarea:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(74,140,92,0.12); }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+  .hole-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; }
+  .hole-btn { aspect-ratio: 1; border: 1.5px solid #d5e0d8; border-radius: 8px; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-mid); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+  .hole-btn:hover { border-color: var(--green-light); background: var(--green-pale); }
+  .hole-btn.active { background: var(--green-mid); border-color: var(--green-mid); color: var(--white); }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 9px 16px; border-radius: 50px; border: 1.5px solid #d5e0d8; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+  .chip:hover { border-color: var(--green-light); background: var(--green-pale); }
+  .chip.active { background: var(--green-deep); border-color: var(--green-deep); color: var(--white); }
+  .chip-icon { font-size: 15px; }
+  .severity-row { display: flex; gap: 8px; }
+  .sev-btn { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1.5px solid #d5e0d8; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-align: center; }
+  .sev-btn.low.active  { background: #e8f5e9; border-color: #4caf50; color: #2e7d32; }
+  .sev-btn.med.active  { background: #fff8e1; border-color: #ffc107; color: #e65100; }
+  .sev-btn.high.active { background: #ffebee; border-color: #ef5350; color: #c62828; }
+  .sev-btn:not(.active) { color: var(--text-light); }
+  .divider { height: 1px; background: rgba(74,140,92,0.12); margin: 24px 0; }
+  .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--green-mid), var(--green-deep)); color: var(--white); border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px rgba(26,58,42,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,58,42,0.4); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .success-screen { display: none; text-align: center; padding: 40px 20px; }
+  .success-screen.visible { display: block; }
+  .success-icon { font-size: 52px; margin-bottom: 16px; }
+  .success-screen h2 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 22px; margin-bottom: 8px; }
+  .success-screen p { color: var(--text-mid); font-size: 14px; line-height: 1.6; }
+  .new-report-btn { margin-top: 24px; padding: 13px 32px; background: var(--green-pale); color: var(--green-deep); border: 1.5px solid var(--green-light); border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .new-report-btn:hover { background: var(--green-light); color: var(--white); }
+  .footer-note { text-align: center; color: rgba(255,255,255,0.35); font-size: 11px; margin-top: 20px; padding: 0 24px; }
+  .setup-banner { background: linear-gradient(135deg, #1a3a2a, #2d5a3d); border: 1px solid var(--gold); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-size: 12px; color: var(--gold-light); line-height: 1.6; }
+  .setup-banner strong { color: var(--gold); display: block; margin-bottom: 4px; font-size: 13px; }
+  .setup-banner code { background: rgba(255,255,255,0.1); padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; color: #adf5c8; }
+  .time-display { font-size: 13px; color: var(--text-light); text-align: right; margin-bottom: 18px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="flag-icon">⛳</span>
+  <h1>Baan Marshal Rapport</h1>
+  <p id="dateDisplay">Datum laden...</p>
+</div>
+
+<div class="card" id="formCard">
+  <div class="setup-banner" style="display:none;">
+    <strong>⚙️ Eenmalige instelling vereist</strong>
+    Vervang <code>https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3</code> onderaan dit bestand door uw Google Apps Script Web App URL. Zie de installatiegids.
+  </div>
+
+  <div id="formContent">
+    <div class="time-display" id="timeDisplay"></div>
+
+    <div class="section-label">Marshalgegevens</div>
+    <div class="field">
+      <label>Naam marshal <span class="req">*</span></label>
+      <select id="marshalName">
+        <option value="">— Selecteer uw naam —</option>
+        <option>Colin Smith</option>
+        <option>Dora Hinoul</option>
+        <option>Gerard Hazelebach</option>
+        <option>Jan Leys</option>
+        <option>Johan Moens</option>
+        <option>Lieven Spoo</option>
+        <option>Luc Van Den Bergh</option>
+        <option>Patrick Aelbrecht</option>
+        <option>Peter H. Peeters</option>
+        <option>Rita De Pauw</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Locatie op de baan</div>
+    <div class="field">
+      <label>Holenummer <span class="req">*</span></label>
+      <div class="hole-grid" id="holeGrid"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Rapporttype <span style="color:var(--gold)">*</span></div>
+    <div class="field">
+      <div class="chip-group">
+        <button type="button" class="chip" data-type="Speelritme"><span class="chip-icon">⏱️</span> Speelritme</button>
+        <button type="button" class="chip" data-type="Langzame groep"><span class="chip-icon">🐢</span> Langzame groep</button>
+        <button type="button" class="chip" data-type="Gedrag speler"><span class="chip-icon">⚠️</span> Gedrag speler</button>
+        <button type="button" class="chip" data-type="Incident"><span class="chip-icon">🚨</span> Incident</button>
+        <button type="button" class="chip" data-type="Baanconditie"><span class="chip-icon">🌿</span> Baanconditie</button>
+        <button type="button" class="chip" data-type="Gevaar"><span class="chip-icon">⛔</span> Gevaar</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Rapportdetails</div>
+    <div class="field">
+      <label>Ernst</label>
+      <div class="severity-row">
+        <button type="button" class="sev-btn low" data-sev="Laag">🟢 Laag</button>
+        <button type="button" class="sev-btn med" data-sev="Gemiddeld">🟡 Gemiddeld</button>
+        <button type="button" class="sev-btn high" data-sev="Hoog">🔴 Hoog</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Groep / Buggy ID <span style="font-weight:300;color:var(--text-light)">(optioneel)</span></label>
+      <input type="text" id="groupId" placeholder="bijv. Buggy 12, Groep in blauwe shirts…">
+    </div>
+
+    <div class="field">
+      <label>Opmerkingen <span class="req">*</span></label>
+      <textarea id="notes" placeholder="Beschrijf de situatie duidelijk…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Ondernomen actie <span style="font-weight:300;color:var(--text-light)">(optioneel)</span></label>
+      <select id="actionTaken">
+        <option value="">— Selecteer indien van toepassing —</option>
+        <option>Mondelinge waarschuwing gegeven</option>
+        <option>Groep gevraagd sneller te spelen</option>
+        <option>Groep gevraagd een hole over te slaan</option>
+        <option>Gemeld bij de pro shop</option>
+        <option>Gevaar afgezet</option>
+        <option>Onderhoud gebeld</option>
+        <option>Geen actie — in de gaten houden</option>
+        <option>Anders (zie opmerkingen)</option>
+      </select>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitReport()">
+      <span>Rapport verzenden</span> <span>→</span>
+    </button>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✅</div>
+    <h2>Rapport verzonden</h2>
+    <p>Uw rapport is vastgelegd in het Google Sheets overzicht. Bedankt.</p>
+    <button class="new-report-btn" onclick="resetForm()">Nieuw rapport indienen</button>
+  </div>
+</div>
+
+<div class="footer-note">Marshalrapporten worden veilig opgeslagen in Google Sheets.<br>Neem contact op met de pro shop bij dringende incidenten.</div>
+
+<script>
+  const GOOGLE_SCRIPT_URL = "https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3"; // ← Vervang dit
+
+  let selectedHole = null, selectedType = null, selectedSeverity = null;
+
+  function updateTime() {
+    const now = new Date();
+    document.getElementById("dateDisplay").textContent =
+      now.toLocaleDateString('nl-NL', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    document.getElementById("timeDisplay").textContent =
+      "Tijd: " + now.toLocaleTimeString('nl-NL', { hour:'2-digit', minute:'2-digit' });
+  }
+  updateTime();
+  setInterval(updateTime, 30000);
+
+  const holeGrid = document.getElementById("holeGrid");
+  for (let i = 1; i <= 18; i++) {
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "hole-btn"; btn.textContent = i;
+    btn.onclick = () => {
+      document.querySelectorAll(".hole-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active"); selectedHole = i;
+    };
+    holeGrid.appendChild(btn);
+  }
+
+  document.querySelectorAll(".chip").forEach(chip => {
+    chip.onclick = () => {
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active"); selectedType = chip.dataset.type;
+    };
+  });
+
+  document.querySelectorAll(".sev-btn").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".sev-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active"); selectedSeverity = btn.dataset.sev;
+    };
+  });
+
+  async function submitReport() {
+    const marshal = document.getElementById("marshalName").value;
+    const notes   = document.getElementById("notes").value.trim();
+    if (!marshal)      { alert("Selecteer uw naam."); return; }
+    if (!selectedHole) { alert("Selecteer het holenummer."); return; }
+    if (!selectedType) { alert("Selecteer een rapporttype."); return; }
+    if (!notes)        { alert("Voer opmerkingen in over het incident."); return; }
+
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true;
+    btn.innerHTML = "<span>Verzenden…</span>";
+
+    const payload = {
+      timestamp:  new Date().toISOString(),
+      marshal:    marshal,
+      hole:       selectedHole,
+      reportType: selectedType,
+      severity:   selectedSeverity || "Niet opgegeven",
+      groupId:    document.getElementById("groupId").value.trim() || "—",
+      notes:      notes,
+      action:     document.getElementById("actionTaken").value || "Geen actie vastgelegd"
+    };
+
+    if (false) {
+      await new Promise(r => setTimeout(r, 1200));
+      showSuccess();
+    } else {
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST", mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        showSuccess();
+      } catch(e) {
+        alert("Kon niet verzenden. Controleer uw internetverbinding of de script-URL.");
+        btn.disabled = false;
+        btn.innerHTML = "<span>Rapport verzenden</span> <span>→</span>";
+      }
+    }
+  }
+
+  function showSuccess() {
+    document.getElementById("formContent").style.display = "none";
+    document.getElementById("successScreen").classList.add("visible");
+  }
+
+  function resetForm() {
+    ["marshalName","groupId","notes","actionTaken"].forEach(id => document.getElementById(id).value = "");
+    document.querySelectorAll(".hole-btn,.chip,.sev-btn").forEach(b => b.classList.remove("active"));
+    selectedHole = null; selectedType = null; selectedSeverity = null;
+    document.getElementById("formContent").style.display = "block";
+    document.getElementById("successScreen").classList.remove("visible");
+    document.getElementById("submitBtn").disabled = false;
+    document.getElementById("submitBtn").innerHTML = "<span>Rapport verzenden</span> <span>→</span>";
+    updateTime();
+  }
+</script>
+</body>
+</html>
