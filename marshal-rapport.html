@@ -238,20 +238,26 @@
     if (false) {
       await new Promise(r => setTimeout(r, 1200));
       showSuccess();
+} else {
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (response.ok) {
+      showSuccess();
     } else {
-      try {
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        showSuccess();
-      } catch(e) {
-        alert("Kon niet verzenden. Controleer uw internetverbinding of de script-URL.");
-        btn.disabled = false;
-        btn.innerHTML = "<span>Rapport verzenden</span> <span>→</span>";
-      }
+      alert("Fout bij verzenden. Statuscode: " + response.status);
+      btn.disabled = false;
+      btn.innerHTML = "<span>Rapport verzenden</span> <span>»</span>";
     }
+  } catch(e) {
+    alert("Kon niet verzenden. Controleer uw internetverbinding of de script-URL.");
+    btn.disabled = false;
+    btn.innerHTML = "<span>Rapport verzenden</span> <span>»</span>";
+  }
+}
   }
 
   function showSuccess() {
