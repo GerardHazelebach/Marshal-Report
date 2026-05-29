@@ -253,7 +253,7 @@
       btn.innerHTML = "<span>Rapport verzenden</span> <span>»</span>";
     }
   } catch(e) {
-    alert("Kon niet verzenden. Controleer uw internetverbinding of de script-URL.");
+    alert("Fout: " + e.message);
     btn.disabled = false;
     btn.innerHTML = "<span>Rapport verzenden</span> <span>»</span>";
   }
