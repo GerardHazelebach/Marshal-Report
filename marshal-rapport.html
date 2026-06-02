@@ -218,6 +218,8 @@
   let currentMarshal = null;
   let selectedHole = null, selectedType = null, selectedSeverity = null;
 
+  document.addEventListener('DOMContentLoaded', function() {
+
   // Eenvoudige hash functie
   function simpleHash(str) {
     let hash = 0;
@@ -359,6 +361,7 @@
     document.getElementById("submitBtn").innerHTML = "<span>Rapport verzenden</span> <span>→</span>";
     updateTime();
   }
+  }); // DOMContentLoaded
 </script>
 </body>
 </html>
