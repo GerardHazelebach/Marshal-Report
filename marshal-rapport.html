@@ -191,16 +191,16 @@
   // Om een nieuwe hash te maken: voer in de browser console uit:
   // sha256("123456").then(h => console.log(h))
   const MARSHALS = {
-    "e0bc60c82713f64ef8a57c0c40d02ce24fd0141d5cc3086259c19b1e62a62bea": "Colin Smith",
-    "19e58efc7f71d3ec0bd46d451e84674f072ccc74c3128f4f017e6981d4e92543": "Dora Hinoul",
-    "3d5e554a8268b0baf4ff9d81eb9b77d81e3c3834350caca50c3833da49c6134e": "Gerard Hazelebach",
-    "48e6f958531e543731746fd0a4fcba173e2ae226d60eb19a5d021be3c29f7a3e": "Jan Leys",
-    "270fa1445d2cd102ce2ab33bc7e1f03a5a63beabce213c1f495a00ef11e1c5f5": "Johan Moens",
-    "43cb39dedd55125e05517707609603ee95b076a56c110c6c5a5b00dc0d7a557d": "Lieven Spoo",
-    "29624e2e4c4ccee26ed8f3e0ca1012ea57a8f2191be6149f632250f7036119cc": "Luc Van Den Bergh",
-    "05853cc8379476d8bb3d350625a3bc08b91214049be1847d4e5403cc44715e31": "Patrick Aelbrecht",
-    "54a2371a14a822b965bfff1054d8f1381736ce33e66cb6fc4eae27cbabc0afcf": "Peter H. Peeters",
-    "66058e0e82789688153b599e340bb6f17cbfccdfb42082f9fd0c0c52bdf6b42c": "Rita De Pauw"
+    "nz2e2o": "Colin Smith",
+    "ogogtc": "Dora Hinoul",
+    "oyajk0": "Gerard Hazelebach",
+    "pfwmao": "Jan Leys",
+    "pxip1c": "Johan Moens",
+    "qf4rs0": "Lieven Spoo",
+    "qwquio": "Luc Van Den Bergh",
+    "recx0g": "Patrick Aelbrecht",
+    "rqu9vd": "Peter H. Peeters",
+    "nyhbhe": "Rita De Pauw"
   };
     "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92": "Colin Smith",
     "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f": "Dora Hinoul",
@@ -218,12 +218,15 @@
   let currentMarshal = null;
   let selectedHole = null, selectedType = null, selectedSeverity = null;
 
-  // SHA-256 hash functie
-  async function sha256(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  // Eenvoudige hash functie
+  function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash).toString(36);
   }
 
   // PIN invoer
@@ -232,13 +235,13 @@
     if (e.key === "Enter") checkPin();
   });
 
-  async function checkPin() {
+  function checkPin() {
     const pin = document.getElementById("pinInput").value.trim();
     if (pin.length !== 6) {
       document.getElementById("pinError").textContent = "Voer een pincode van 6 cijfers in.";
       return;
     }
-    const hash = await sha256(pin);
+    const hash = simpleHash(pin);
     if (MARSHALS[hash]) {
       currentMarshal = MARSHALS[hash];
       document.getElementById("pinScreen").style.display = "none";
