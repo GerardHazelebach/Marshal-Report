@@ -26,7 +26,7 @@
   .field { margin-bottom: 22px; }
   .field label { display: block; font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 7px; letter-spacing: 0.3px; }
   .field label .req { color: var(--gold); margin-left: 2px; }
-  select, input[type="text"], textarea { width: 100%; padding: 13px 16px; border: 1.5px solid #d5e0d8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text-dark); background: var(--white); appearance: none; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+  select, input[type="text"], input[type="password"], textarea { width: 100%; padding: 13px 16px; border: 1.5px solid #d5e0d8; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text-dark); background: var(--white); appearance: none; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a8c5c' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
   select:focus, input:focus, textarea:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(74,140,92,0.12); }
   textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
@@ -56,11 +56,25 @@
   .success-screen p { color: var(--text-mid); font-size: 14px; line-height: 1.6; }
   .new-report-btn { margin-top: 24px; padding: 13px 32px; background: var(--green-pale); color: var(--green-deep); border: 1.5px solid var(--green-light); border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .new-report-btn:hover { background: var(--green-light); color: var(--white); }
-  .footer-note { text-align: center; color: rgba(255,255,255,0.35); font-size: 11px; margin-top: 20px; padding: 0 24px; }
-  .setup-banner { background: linear-gradient(135deg, #1a3a2a, #2d5a3d); border: 1px solid var(--gold); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-size: 12px; color: var(--gold-light); line-height: 1.6; }
-  .setup-banner strong { color: var(--gold); display: block; margin-bottom: 4px; font-size: 13px; }
-  .setup-banner code { background: rgba(255,255,255,0.1); padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; color: #adf5c8; }
+  .footer-note { text-align: center; color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 500; margin-top: 20px; padding: 0 24px; line-height: 1.6; }
   .time-display { font-size: 13px; color: var(--text-light); text-align: right; margin-bottom: 18px; }
+
+  /* PIN scherm */
+  .pin-screen { text-align: center; padding: 20px 0; }
+  .pin-screen h2 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 20px; margin-bottom: 8px; }
+  .pin-screen p { color: var(--text-mid); font-size: 14px; margin-bottom: 24px; }
+  .pin-display { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
+  .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--green-light); background: transparent; transition: all 0.15s; }
+  .pin-dot.filled { background: var(--green-mid); border-color: var(--green-mid); }
+  .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
+  .pin-key { padding: 18px; border-radius: 12px; border: 1.5px solid #d5e0d8; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: all 0.15s; }
+  .pin-key:hover { border-color: var(--green-light); background: var(--green-pale); }
+  .pin-key:active { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+  .pin-key.delete { font-size: 16px; color: var(--text-light); }
+  .pin-error { color: #c62828; font-size: 13px; margin-top: 16px; min-height: 20px; font-weight: 500; }
+  .marshal-badge { background: var(--green-pale); border: 1.5px solid var(--green-light); border-radius: 10px; padding: 10px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  .marshal-badge span { font-weight: 600; color: var(--green-deep); font-size: 14px; }
+  .marshal-badge button { margin-left: auto; background: none; border: none; color: var(--text-light); font-size: 12px; cursor: pointer; text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -72,30 +86,43 @@
 </div>
 
 <div class="card" id="formCard">
-  <div class="setup-banner" style="display:none;">
-    <strong>⚙️ Eenmalige instelling vereist</strong>
-    Vervang <code>https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3</code> onderaan dit bestand door uw Google Apps Script Web App URL. Zie de installatiegids.
+
+  <!-- PIN SCHERM -->
+  <div id="pinScreen" class="pin-screen">
+    <h2>Welkom</h2>
+    <p>Voer uw persoonlijke pincode in</p>
+    <div class="pin-display" id="pinDisplay">
+      <div class="pin-dot" id="dot0"></div>
+      <div class="pin-dot" id="dot1"></div>
+      <div class="pin-dot" id="dot2"></div>
+      <div class="pin-dot" id="dot3"></div>
+      <div class="pin-dot" id="dot4"></div>
+      <div class="pin-dot" id="dot5"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key delete" onclick="pinDelete()">⌫</button>
+    </div>
+    <div class="pin-error" id="pinError"></div>
   </div>
 
-  <div id="formContent">
+  <!-- FORMULIER -->
+  <div id="formContent" style="display:none;">
     <div class="time-display" id="timeDisplay"></div>
 
-    <div class="section-label">Marshalgegevens</div>
-    <div class="field">
-      <label>Naam marshal <span class="req">*</span></label>
-      <select id="marshalName">
-        <option value="">— Selecteer uw naam —</option>
-        <option>Colin Smith</option>
-        <option>Dora Hinoul</option>
-        <option>Gerard Hazelebach</option>
-        <option>Jan Leys</option>
-        <option>Johan Moens</option>
-        <option>Lieven Spoo</option>
-        <option>Luc Van Den Bergh</option>
-        <option>Patrick Aelbrecht</option>
-        <option>Peter H. Peeters</option>
-        <option>Rita De Pauw</option>
-      </select>
+    <div class="marshal-badge">
+      <span>👤</span>
+      <span id="marshalBadgeName"></span>
+      <button onclick="uitloggen()">Uitloggen</button>
     </div>
 
     <div class="divider"></div>
@@ -117,6 +144,8 @@
         <button type="button" class="chip" data-type="Incident"><span class="chip-icon">🚨</span> Incident</button>
         <button type="button" class="chip" data-type="Baanconditie"><span class="chip-icon">🌿</span> Baanconditie</button>
         <button type="button" class="chip" data-type="Gevaar"><span class="chip-icon">⛔</span> Gevaar</button>
+        <button type="button" class="chip" data-type="No Show"><span class="chip-icon">🚫</span> No Show</button>
+        <button type="button" class="chip" data-type="Speler gestopt"><span class="chip-icon">🛑</span> Speler gestopt</button>
       </div>
     </div>
 
@@ -149,8 +178,8 @@
         <option>Mondelinge waarschuwing gegeven</option>
         <option>Groep gevraagd sneller te spelen</option>
         <option>Groep gevraagd een hole over te slaan</option>
-        <option>Gemeld bij de pro shop</option>
-        <option>Gevaar afgezet</option>
+        <option>Gemeld bij Secretariaat</option>
+        <option>Gevaar gemeld</option>
         <option>Onderhoud gebeld</option>
         <option>Geen actie — in de gaten houden</option>
         <option>Anders (zie opmerkingen)</option>
@@ -162,21 +191,108 @@
     </button>
   </div>
 
+  <!-- BEVESTIGINGSSCHERM -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">✅</div>
     <h2>Rapport verzonden</h2>
-    <p>Uw rapport is succesvol verzonden. Bedankt.</p>
+    <p>Uw rapport is vastgelegd. Bedankt.</p>
     <button class="new-report-btn" onclick="resetForm()">Nieuw rapport indienen</button>
   </div>
 </div>
 
-<div class="footer-note">Marshalrapporten worden veilig opgeslagen en verwerkt.<br>Neem contact op met de het secretariaat (016-651216) bij dringende incidenten.</div>
+<div class="footer-note">Marshalrapporten worden veilig opgeslagen.<br>Neem contact op met het secretariaat bij dringende incidenten.</div>
 
 <script>
-  const GOOGLE_SCRIPT_URL = "https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3"; // ← Vervang dit
+  // ── CONFIGURATIE ──────────────────────────────────────────
+  const WEBHOOK_URL = "https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3";
 
+  // Versleutelde pincodes (SHA-256 hashes)
+  // Om een nieuwe hash te maken: voer in de browser console uit:
+  // sha256("123456").then(h => console.log(h))
+  const MARSHALS = {
+    "e0bc60c82713f64ef8a57c0c40d02ce24fd0141d5cc3086259c19b1e62a62bea": "Colin Smith",
+    "19e58efc7f71d3ec0bd46d451e84674f072ccc74c3128f4f017e6981d4e92543": "Dora Hinoul",
+    "3d5e554a8268b0baf4ff9d81eb9b77d81e3c3834350caca50c3833da49c6134e": "Gerard Hazelebach",
+    "48e6f958531e543731746fd0a4fcba173e2ae226d60eb19a5d021be3c29f7a3e": "Jan Leys",
+    "270fa1445d2cd102ce2ab33bc7e1f03a5a63beabce213c1f495a00ef11e1c5f5": "Johan Moens",
+    "43cb39dedd55125e05517707609603ee95b076a56c110c6c5a5b00dc0d7a557d": "Lieven Spoo",
+    "29624e2e4c4ccee26ed8f3e0ca1012ea57a8f2191be6149f632250f7036119cc": "Luc Van Den Bergh",
+    "05853cc8379476d8bb3d350625a3bc08b91214049be1847d4e5403cc44715e31": "Patrick Aelbrecht",
+    "54a2371a14a822b965bfff1054d8f1381736ce33e66cb6fc4eae27cbabc0afcf": "Peter H. Peeters",
+    "66058e0e82789688153b599e340bb6f17cbfccdfb42082f9fd0c0c52bdf6b42c": "Rita De Pauw"
+  };
+    "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92": "Colin Smith",
+    "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f": "Dora Hinoul",
+    "b3a8e0e1f9ab1bfe3a36f231f676f78bb28a2d0f4b22d34e": "Gerard Hazelebach",
+    "5f4dcc3b5aa765d61d8327deb882cf99b8fa3fe7c83b6d82c0d6d92b3e51f2a2": "Jan Leys",
+    "7c222fb2927d828af22f592134e8932480637c0d": "Johan Moens",
+    "2c624232cdd221771294dfbb310acbc8d21839": "Lieven Spoo",
+    "9f86d081884c7d659a2feaa0c55ad015a3bf4f1c2d4e0571a87ef8f4c2e4b2c9": "Luc Van Den Bergh",
+    "0ade7c2cf97f75d009975f4d720d1fa6c19f4897": "Patrick Aelbrecht",
+    "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b": "Peter H. Peeters",
+    "d8e8fca2dc0f896fd7cb4cb0031ba249": "Rita De Pauw"
+  };
+  // ─────────────────────────────────────────────────────────
+
+  let currentMarshal = null;
+  let pinInput = "";
   let selectedHole = null, selectedType = null, selectedSeverity = null;
 
+  // SHA-256 hash functie
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // PIN invoer
+  function pinKey(digit) {
+    if (pinInput.length >= 6) return;
+    pinInput += digit;
+    updatePinDisplay();
+    if (pinInput.length === 6) checkPin();
+  }
+
+  function pinDelete() {
+    pinInput = pinInput.slice(0, -1);
+    updatePinDisplay();
+    document.getElementById("pinError").textContent = "";
+  }
+
+  function updatePinDisplay() {
+    for (let i = 0; i < 6; i++) {
+      document.getElementById("dot" + i).classList.toggle("filled", i < pinInput.length);
+    }
+  }
+
+  async function checkPin() {
+    const hash = await sha256(pinInput);
+    if (MARSHALS[hash]) {
+      currentMarshal = MARSHALS[hash];
+      document.getElementById("pinScreen").style.display = "none";
+      document.getElementById("formContent").style.display = "block";
+      document.getElementById("marshalBadgeName").textContent = currentMarshal;
+      updateTime();
+    } else {
+      document.getElementById("pinError").textContent = "Ongeldige pincode. Probeer opnieuw.";
+      pinInput = "";
+      updatePinDisplay();
+    }
+  }
+
+  function uitloggen() {
+    currentMarshal = null;
+    pinInput = "";
+    updatePinDisplay();
+    document.getElementById("pinError").textContent = "";
+    document.getElementById("pinScreen").style.display = "block";
+    document.getElementById("formContent").style.display = "none";
+    document.getElementById("successScreen").classList.remove("visible");
+    resetFormFields();
+  }
+
+  // Datum/tijd
   function updateTime() {
     const now = new Date();
     document.getElementById("dateDisplay").textContent =
@@ -187,6 +303,7 @@
   updateTime();
   setInterval(updateTime, 30000);
 
+  // Hole raster
   const holeGrid = document.getElementById("holeGrid");
   for (let i = 1; i <= 18; i++) {
     const btn = document.createElement("button");
@@ -212,10 +329,9 @@
     };
   });
 
+  // Verzenden
   async function submitReport() {
-    const marshal = document.getElementById("marshalName").value;
-    const notes   = document.getElementById("notes").value.trim();
-    if (!marshal)      { alert("Selecteer uw naam."); return; }
+    const notes = document.getElementById("notes").value.trim();
     if (!selectedHole) { alert("Selecteer het holenummer."); return; }
     if (!selectedType) { alert("Selecteer een rapporttype."); return; }
     if (!notes)        { alert("Voer opmerkingen in over het incident."); return; }
@@ -226,7 +342,7 @@
 
     const payload = {
       timestamp:  new Date().toISOString(),
-      marshal:    marshal,
+      marshal:    currentMarshal,
       hole:       selectedHole,
       reportType: selectedType,
       severity:   selectedSeverity || "Niet opgegeven",
@@ -235,29 +351,18 @@
       action:     document.getElementById("actionTaken").value || "Geen actie vastgelegd"
     };
 
-    if (false) {
-      await new Promise(r => setTimeout(r, 1200));
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
+      });
       showSuccess();
-} else {
-  try {
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    if (response.ok) {
-      showSuccess();
-    } else {
-      alert("Fout bij verzenden. Statuscode: " + response.status);
+    } catch(e) {
+      alert("Kon niet verzenden. Controleer uw internetverbinding.");
       btn.disabled = false;
-      btn.innerHTML = "<span>Rapport verzenden</span> <span>»</span>";
+      btn.innerHTML = "<span>Rapport verzenden</span> <span>→</span>";
     }
-  } catch(e) {
-    alert("Fout: " + e.message);
-    btn.disabled = false;
-    btn.innerHTML = "<span>Rapport verzenden</span> <span>»</span>";
-  }
-}
   }
 
   function showSuccess() {
@@ -265,10 +370,14 @@
     document.getElementById("successScreen").classList.add("visible");
   }
 
-  function resetForm() {
-    ["marshalName","groupId","notes","actionTaken"].forEach(id => document.getElementById(id).value = "");
+  function resetFormFields() {
+    ["groupId","notes","actionTaken"].forEach(id => document.getElementById(id).value = "");
     document.querySelectorAll(".hole-btn,.chip,.sev-btn").forEach(b => b.classList.remove("active"));
     selectedHole = null; selectedType = null; selectedSeverity = null;
+  }
+
+  function resetForm() {
+    resetFormFields();
     document.getElementById("formContent").style.display = "block";
     document.getElementById("successScreen").classList.remove("visible");
     document.getElementById("submitBtn").disabled = false;
