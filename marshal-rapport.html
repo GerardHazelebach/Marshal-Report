@@ -66,7 +66,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 <div class="header">
   <div style="font-size:32px;margin-bottom:8px;">⛳</div>
   <h1>Baan Marshal Rapport</h1>
-  <p id="dateDisplay">Golf&Business Association Kampenhout</p>
+  <p id="dateDisplay">Datum laden...</p>
 </div>
 
 <div class="card">
@@ -77,7 +77,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <p>Voer uw 6-cijferige pincode in</p>
     <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6"
            id="pinInput" class="pin-input" placeholder="••••••" autocomplete="off">
-    <button class="pin-btn" id="pinBtn">Bevestigen</button>
+    <button class="pin-btn" id="pinBtn" onclick="doPinCheck()">Bevestigen</button>
     <div class="pin-error" id="pinError"></div>
   </div>
 
@@ -194,7 +194,7 @@ updateDate();
 setInterval(updateDate, 30000);
 
 // PIN
-document.getElementById("pinBtn").addEventListener("click", function() {
+function doPinCheck() {
   var pin = document.getElementById("pinInput").value.trim();
   if (PINS[pin]) {
     marshal = PINS[pin];
@@ -207,10 +207,10 @@ document.getElementById("pinBtn").addEventListener("click", function() {
     document.getElementById("pinError").textContent = "Ongeldige pincode. Probeer opnieuw.";
     document.getElementById("pinInput").value = "";
   }
-});
+}
 
 document.getElementById("pinInput").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") document.getElementById("pinBtn").click();
+  if (e.key === "Enter") doPinCheck();
 });
 
 // Uitloggen
