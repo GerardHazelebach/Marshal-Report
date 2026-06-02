@@ -63,16 +63,11 @@
   .pin-screen { text-align: center; padding: 20px 0; }
   .pin-screen h2 { font-family: 'Playfair Display', serif; color: var(--green-deep); font-size: 20px; margin-bottom: 8px; }
   .pin-screen p { color: var(--text-mid); font-size: 14px; margin-bottom: 24px; }
-  .pin-display { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
-  .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--green-light); background: transparent; transition: all 0.15s; }
-  .pin-dot.filled { background: var(--green-mid); border-color: var(--green-mid); }
-  .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
-  .pin-key { padding: 18px; border-radius: 12px; border: 1.5px solid #d5e0d8; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: all 0.15s; }
-  .pin-key:hover { border-color: var(--green-light); background: var(--green-pale); }
-  .pin-key:active { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
-  .pin-key { -webkit-tap-highlight-color: transparent; touch-action: manipulation; cursor: pointer; }
-  .pin-key.delete { font-size: 16px; color: var(--text-light); }
-  .pin-error { color: #c62828; font-size: 13px; margin-top: 16px; min-height: 20px; font-weight: 500; }
+  .pin-input-wrap { position: relative; max-width: 220px; margin: 0 auto 20px; }
+  .pin-input { width: 100%; padding: 16px; font-size: 28px; letter-spacing: 12px; text-align: center; border: 2px solid var(--green-light); border-radius: 12px; background: var(--white); color: var(--green-deep); font-weight: 700; -webkit-text-security: disc; }
+  .pin-input:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(74,140,92,0.15); }
+  .pin-submit { width: 100%; max-width: 220px; padding: 14px; background: linear-gradient(135deg, var(--green-mid), var(--green-deep)); color: var(--white); border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+  .pin-error { color: #c62828; font-size: 13px; margin-top: 12px; min-height: 20px; font-weight: 500; }
   .marshal-badge { background: var(--green-pale); border: 1.5px solid var(--green-light); border-radius: 10px; padding: 10px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
   .marshal-badge span { font-weight: 600; color: var(--green-deep); font-size: 14px; }
   .marshal-badge button { margin-left: auto; background: none; border: none; color: var(--text-light); font-size: 12px; cursor: pointer; text-decoration: underline; }
@@ -92,27 +87,12 @@
   <div id="pinScreen" class="pin-screen">
     <h2>Welkom</h2>
     <p>Voer uw persoonlijke pincode in</p>
-    <div class="pin-display" id="pinDisplay">
-      <div class="pin-dot" id="dot0"></div>
-      <div class="pin-dot" id="dot1"></div>
-      <div class="pin-dot" id="dot2"></div>
-      <div class="pin-dot" id="dot3"></div>
-      <div class="pin-dot" id="dot4"></div>
-      <div class="pin-dot" id="dot5"></div>
+    <div class="pin-input-wrap">
+      <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+             id="pinInput" class="pin-input" placeholder="······"
+             autocomplete="off" autocorrect="off" spellcheck="false">
     </div>
-    <div class="pin-pad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
-      <button class="pin-key" onclick="pinKey('0')">0</button>
-      <button class="pin-key delete" onclick="pinDelete()">⌫</button>
-    </div>
+    <button class="pin-submit" onclick="checkPin()">Bevestigen</button>
     <div class="pin-error" id="pinError"></div>
   </div>
 
@@ -236,7 +216,6 @@
   // ─────────────────────────────────────────────────────────
 
   let currentMarshal = null;
-  let pinInput = "";
   let selectedHole = null, selectedType = null, selectedSeverity = null;
 
   // SHA-256 hash functie
@@ -248,52 +227,36 @@
   }
 
   // PIN invoer
-  // iOS touch fix
-  document.querySelectorAll('.pin-key').forEach(btn => {
-    btn.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      this.click();
-    });
+  // PIN invoer via input veld
+  document.getElementById("pinInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") checkPin();
   });
 
-  function pinKey(digit) {
-    if (pinInput.length >= 6) return;
-    pinInput += digit;
-    updatePinDisplay();
-    if (pinInput.length === 6) checkPin();
-  }
-
-  function pinDelete() {
-    pinInput = pinInput.slice(0, -1);
-    updatePinDisplay();
-    document.getElementById("pinError").textContent = "";
-  }
-
-  function updatePinDisplay() {
-    for (let i = 0; i < 6; i++) {
-      document.getElementById("dot" + i).classList.toggle("filled", i < pinInput.length);
-    }
-  }
-
   async function checkPin() {
-    const hash = await sha256(pinInput);
+    const pin = document.getElementById("pinInput").value.trim();
+    if (pin.length !== 6) {
+      document.getElementById("pinError").textContent = "Voer een pincode van 6 cijfers in.";
+      return;
+    }
+    const hash = await sha256(pin);
     if (MARSHALS[hash]) {
       currentMarshal = MARSHALS[hash];
       document.getElementById("pinScreen").style.display = "none";
       document.getElementById("formContent").style.display = "block";
       document.getElementById("marshalBadgeName").textContent = currentMarshal;
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinError").textContent = "";
       updateTime();
     } else {
       document.getElementById("pinError").textContent = "Ongeldige pincode. Probeer opnieuw.";
-      pinInput = "";
-      updatePinDisplay();
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinInput").focus();
     }
   }
 
   function uitloggen() {
     currentMarshal = null;
-    pinInput = "";
-    updatePinDisplay();
+    document.getElementById("pinInput").value = "";
     document.getElementById("pinError").textContent = "";
     document.getElementById("pinScreen").style.display = "block";
     document.getElementById("formContent").style.display = "none";
