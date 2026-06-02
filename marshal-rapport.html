@@ -268,7 +268,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
   btn.textContent = "Verzenden…";
 
   var payload = {
-    timestamp:  new Date().toISOString(),
+    timestamp:  new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
     marshal:    marshal,
     hole:       hole,
     reportType: rapportType,
