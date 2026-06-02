@@ -70,6 +70,7 @@
   .pin-key { padding: 18px; border-radius: 12px; border: 1.5px solid #d5e0d8; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: all 0.15s; }
   .pin-key:hover { border-color: var(--green-light); background: var(--green-pale); }
   .pin-key:active { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+  .pin-key { -webkit-tap-highlight-color: transparent; touch-action: manipulation; cursor: pointer; }
   .pin-key.delete { font-size: 16px; color: var(--text-light); }
   .pin-error { color: #c62828; font-size: 13px; margin-top: 16px; min-height: 20px; font-weight: 500; }
   .marshal-badge { background: var(--green-pale); border: 1.5px solid var(--green-light); border-radius: 10px; padding: 10px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
@@ -247,6 +248,14 @@
   }
 
   // PIN invoer
+  // iOS touch fix
+  document.querySelectorAll('.pin-key').forEach(btn => {
+    btn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      this.click();
+    });
+  });
+
   function pinKey(digit) {
     if (pinInput.length >= 6) return;
     pinInput += digit;
