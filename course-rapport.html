@@ -108,7 +108,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 
     <div class="section-label" data-nl="Locatie op de baan" data-en="Course Location">Locatie op de baan</div>
     <div class="field">
-      <label>Holenummer / Zone <span class="req">*</span></label>
+      <label id="holeLabel" data-nl="Holenummer / Zone *" data-en="Hole number / Zone *">Holenummer / Zone <span class="req">*</span></label>
       <div class="hole-grid" id="holeGrid"></div>
     </div>
     <div class="field">
@@ -133,7 +133,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     </div>
     <div class="divider"></div>
 
-    <div class="section-label">Categorie <span style="color:var(--gold)">*</span></div>
+    <div class="section-label" data-nl="Categorie *" data-en="Category *">Categorie <span style="color:var(--gold)">*</span></div>
     <div class="field">
       <div class="chip-group" id="catGroup">
         <button class="chip" data-cat="Greens">🟢 Greens</button>
@@ -152,26 +152,26 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     </div>
     <div class="divider"></div>
 
-    <div class="section-label">Prioriteit <span style="color:var(--gold)">*</span></div>
+    <div class="section-label" data-nl="Prioriteit *" data-en="Priority *">Prioriteit <span style="color:var(--gold)">*</span></div>
     <div class="field">
       <div class="prio-row">
-        <button class="prio-btn low" data-prio="Laag">🟢 <span data-nl="Laag" data-en="Low">Laag</span></button>
-        <button class="prio-btn med" data-prio="Gemiddeld">🟡 <span data-nl="Gemiddeld" data-en="Medium">Gemiddeld</span></button>
-        <button class="prio-btn high" data-prio="Hoog">🟠 <span data-nl="Hoog" data-en="High">Hoog</span></button>
-        <button class="prio-btn urgent" data-prio="Urgent">🔴 Urgent</button>
+        <button class="prio-btn low" data-prio="Laag" data-nl="🟢 Laag" data-en="🟢 Low">🟢 Laag</button>
+        <button class="prio-btn med" data-prio="Gemiddeld" data-nl="🟡 Gemiddeld" data-en="🟡 Medium">🟡 Gemiddeld</button>
+        <button class="prio-btn high" data-prio="Hoog" data-nl="🟠 Hoog" data-en="🟠 High">🟠 Hoog</button>
+        <button class="prio-btn urgent" data-prio="Urgent" data-nl="🔴 Urgent" data-en="🔴 Urgent">🔴 Urgent</button>
       </div>
     </div>
     <div class="divider"></div>
 
     <div class="section-label" data-nl="Details" data-en="Details">Details</div>
     <div class="field">
-      <label>Beschrijving <span class="req">*</span></label>
+      <label data-nl="Beschrijving *" data-en="Description *">Beschrijving <span class="req">*</span></label>
       <textarea id="description" data-nl-placeholder="Beschrijf het probleem of de suggestie duidelijk…" data-en-placeholder="Describe the issue or suggestion clearly…" placeholder="Beschrijf het probleem of de suggestie duidelijk…"></textarea>
     </div>
     <div class="field">
       <label data-nl="Voorgestelde actie (optioneel)" data-en="Suggested action (optional)">Voorgestelde actie (optioneel)</label>
       <select id="actionSuggested">
-        <option value="">— Selecteer indien van toepassing —</option>
+        <option value="" data-nl="— Selecteer indien van toepassing —" data-en="— Select if applicable —">— Selecteer indien van toepassing —</option>
         <option data-nl="Dringende herstelling nodig" data-en="Urgent repair needed">Dringende herstelling nodig</option>
         <option data-nl="Gepland onderhoud inplannen" data-en="Schedule planned maintenance">Gepland onderhoud inplannen</option>
         <option data-nl="Inspectie vereist" data-en="Inspection required">Inspectie vereist</option>
@@ -181,14 +181,14 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
         <option data-nl="Anders (zie beschrijving)" data-en="Other (see description)">Anders (zie beschrijving)</option>
       </select>
     </div>
-    <button class="submit-btn" id="submitBtn">Rapport verzenden →</button>
+    <button class="submit-btn" id="submitBtn" data-nl="Rapport verzenden →" data-en="Submit Report →">Rapport verzenden →</button>
   </div>
 
   <div id="successScreen" class="success-screen">
     <div class="success-icon">✅</div>
     <h2 data-nl="Rapport verzonden" data-en="Report Submitted">Rapport verzonden</h2>
     <p data-nl="Uw rapport is vastgelegd. Bedankt." data-en="Your report has been recorded. Thank you.">Uw rapport is vastgelegd. Bedankt.</p>
-    <button class="new-report-btn" id="newReportBtn">Nieuw rapport indienen</button>
+    <button class="new-report-btn" id="newReportBtn" data-nl="Nieuw rapport indienen" data-en="Submit New Report">Nieuw rapport indienen</button>
   </div>
 
 </div>
@@ -203,16 +203,16 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 var WEBHOOK = "https://hook.eu1.make.com/grgvft8eqw4w7i5jvmyr69snc6zqm17q";
 
 var USERS = {
-  "111111": { name: "Course Director",  role: "Course Director",    roleEn: "Course Director" },
-  "222222": { name: "Head Marshal",     role: "Head Marshal",       roleEn: "Head Marshal" },
+  "111111": { name: "Course Director",  role: "Course Director",     roleEn: "Course Director" },
+  "222222": { name: "Head Marshal",     role: "Head Marshal",        roleEn: "Head Marshal" },
   "333333": { name: "Captain",          role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)" },
-  "444444": { name: "Men's Captain",    role: "Herenkaptein",       roleEn: "Men's Captain" },
-  "555555": { name: "Ladies' Captain",  role: "Dameskaptein",       roleEn: "Ladies' Captain" },
-  "666666": { name: "Junior Captain",   role: "Juniorkaptein",      roleEn: "Junior Captain" },
-  "777777": { name: "Starters Captain", role: "Starterskaptein",    roleEn: "Starters Captain" },
-  "888888": { name: "Seniors Captain",  role: "Seniorenkaptein",    roleEn: "Seniors Captain" },
-  "999999": { name: "Manager",          role: "Manager",            roleEn: "Manager" },
-  "100100": { name: "John Philip",      role: "Head Pro",           roleEn: "Head Pro" }
+  "444444": { name: "Men's Captain",    role: "Herenkaptein",        roleEn: "Men's Captain" },
+  "555555": { name: "Ladies' Captain",  role: "Dameskaptein",        roleEn: "Ladies' Captain" },
+  "666666": { name: "Junior Captain",   role: "Juniorkaptein",       roleEn: "Junior Captain" },
+  "777777": { name: "Starters Captain", role: "Starterskaptein",     roleEn: "Starters Captain" },
+  "888888": { name: "Seniors Captain",  role: "Seniorenkaptein",     roleEn: "Seniors Captain" },
+  "999999": { name: "Manager",          role: "Manager",             roleEn: "Manager" },
+  "100100": { name: "John Philip",      role: "Head Pro",            roleEn: "Head Pro" }
 };
 
 var lang = 'nl';
@@ -247,6 +247,9 @@ function setLang(l) {
     var emoji = c.textContent.split(' ')[0];
     c.textContent = emoji + ' ' + (l === 'en' ? c.getAttribute('data-en-cat') : c.getAttribute('data-cat'));
   });
+  document.querySelectorAll('[data-nl-text]').forEach(function(el) {
+    el.textContent = l === 'en' ? el.getAttribute('data-en-text') : el.getAttribute('data-nl-text');
+  });
   updateDate();
 }
 
@@ -280,6 +283,7 @@ function doPinCheck() {
     document.getElementById("formScreen").style.display = "block";
     document.getElementById("pinInput").value = "";
     errEl.textContent = "";
+    setLang(lang);
   } else {
     errEl.textContent = lang === 'nl' ? "Ongeldige pincode. Probeer opnieuw." : "Invalid PIN. Please try again.";
     document.getElementById("pinInput").value = "";
