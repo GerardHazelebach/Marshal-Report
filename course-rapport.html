@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Course Report – Golfclub Kampenhout</title>
+<style>
+:root {
+  --gd: #1a3a2a; --gm: #2d5a3d; --gl: #4a8c5c; --gp: #e8f2eb;
+  --gold: #c9a84c; --cream: #faf7f0; --tm: #4a5545; --tl: #8a9585; --w: #ffffff;
+  --urgent: #b71c1c; --high: #e65100; --med: #f9a825; --low: #2e7d32;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, 'Times New Roman', serif; background: var(--gd); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 60px; }
+.header { width: 100%; background: linear-gradient(160deg, var(--gd), var(--gm)); padding: 36px 24px 28px; text-align: center; border-bottom: 2px solid var(--gold); position: relative; }
+.header h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; color: var(--cream); }
+.header p { color: var(--gold); font-size: 12px; margin-top: 6px; letter-spacing: 1px; text-transform: uppercase; }
+.lang-toggle { position: absolute; top: 16px; right: 16px; display: flex; gap: 4px; }
+.lang-btn { padding: 5px 10px; border-radius: 20px; border: 1.5px solid var(--gold); background: transparent; color: var(--gold); font-family: Georgia, serif; font-size: 11px; cursor: pointer; letter-spacing: 0.5px; }
+.lang-btn.active { background: var(--gold); color: var(--gd); font-weight: 700; }
+.card { background: var(--cream); border-radius: 14px; box-shadow: 0 4px 24px rgba(26,58,42,0.12); width: calc(100% - 32px); max-width: 520px; margin: 24px auto 0; padding: 28px 24px; }
+.section-label { font-family: Georgia, 'Times New Roman', serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.25); }
+.field { margin-bottom: 20px; }
+.field label { display: block; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; color: var(--tm); margin-bottom: 7px; }
+.req { color: var(--gold); }
+select, input[type="text"], input[type="password"], textarea {
+  width: 100%; padding: 12px 16px; border: 1.5px solid #d5e0d8; border-radius: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; color: #1a2015;
+  background: var(--w); appearance: none; outline: none;
+}
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a8c5c' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+.divider { height: 1px; background: rgba(74,140,92,0.12); margin: 22px 0; }
+.hole-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.hole-btn { aspect-ratio: 1; border: 1.5px solid #d5e0d8; border-radius: 8px; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; color: var(--tm); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.hole-btn.active { background: var(--gm); border-color: var(--gm); color: var(--w); }
+.hole-btn.general { grid-column: span 5; aspect-ratio: unset; padding: 10px; font-size: 13px; border-radius: 8px; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 14px; border-radius: 50px; border: 1.5px solid #d5e0d8; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; color: var(--tm); cursor: pointer; transition: all 0.15s; }
+.chip.active { background: var(--gd); border-color: var(--gd); color: var(--w); }
+.prio-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.prio-btn { padding: 10px 4px; border-radius: 10px; border: 1.5px solid #d5e0d8; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; color: var(--tl); letter-spacing: 0.3px; }
+.prio-btn.low.active    { background: #e8f5e9; border-color: #4caf50; color: var(--low); }
+.prio-btn.med.active    { background: #fff8e1; border-color: #ffc107; color: var(--med); }
+.prio-btn.high.active   { background: #fff3e0; border-color: #ff9800; color: var(--high); }
+.prio-btn.urgent.active { background: #ffebee; border-color: #ef5350; color: var(--urgent); }
+.gps-row { display: flex; gap: 10px; align-items: center; }
+.gps-btn { flex-shrink: 0; padding: 12px 16px; background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; color: var(--gm); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.gps-result { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; color: var(--tl); flex: 1; }
+.gps-result.found { color: var(--gl); font-weight: 600; }
+.submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gm), var(--gd)); color: var(--w); border: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+.submit-btn:disabled { opacity: 0.6; }
+.time-display { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--tl); text-align: right; margin-bottom: 18px; }
+.user-badge { background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; padding: 10px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+.user-badge strong { color: var(--gd); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
+.user-badge span { color: var(--tl); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; }
+.user-badge button { margin-left: auto; background: none; border: none; color: var(--tl); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; cursor: pointer; text-decoration: underline; }
+.success-screen { display: none; text-align: center; padding: 40px 20px; }
+.success-screen.visible { display: block; }
+.success-icon { font-size: 52px; margin-bottom: 16px; }
+.success-screen h2 { font-family: Georgia, 'Times New Roman', serif; color: var(--gd); font-size: 22px; margin-bottom: 8px; }
+.success-screen p { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--tm); font-size: 14px; }
+.new-report-btn { margin-top: 24px; padding: 13px 32px; background: var(--gp); color: var(--gd); border: 1.5px solid var(--gl); border-radius: 50px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
+.footer-note { text-align: center; color: rgba(255,255,255,0.75); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; margin-top: 20px; padding: 0 24px; line-height: 1.6; }
+.footer-note a { color: #ffffff; text-decoration: none; }
+.pin-screen { text-align: center; padding: 10px 0 20px; }
+.pin-screen h2 { font-family: Georgia, 'Times New Roman', serif; color: var(--gd); font-size: 20px; margin-bottom: 8px; }
+.pin-screen p { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--tm); font-size: 14px; margin-bottom: 20px; }
+.pin-input { width: 100%; max-width: 220px; padding: 14px; font-size: 24px; letter-spacing: 8px; text-align: center; border: 2px solid var(--gl); border-radius: 12px; background: var(--w); color: var(--gd); font-weight: 700; display: block; margin: 0 auto 16px; }
+.pin-btn { display: block; width: 100%; max-width: 220px; margin: 0 auto; padding: 14px; background: linear-gradient(135deg, var(--gm), var(--gd)); color: var(--w); border: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; }
+.pin-error { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #c62828; font-size: 13px; margin-top: 12px; min-height: 18px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('nl')">NL</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+  <div style="font-size:32px;margin-bottom:8px;">⛳</div>
+  <h1 data-nl="Baan Rapport" data-en="Course Report">Baan Rapport</h1>
+  <p data-nl="Golf &amp; Business Association Kampenhout" data-en="Golf &amp; Business Association Kampenhout">Golf &amp; Business Association Kampenhout</p>
+  <p id="dateDisplay" style="margin-top:8px;color:rgba(255,255,255,0.7);font-size:12px;letter-spacing:0;text-transform:none;font-family:-apple-system,sans-serif;"></p>
+</div>
+
+<div class="card">
+
+  <div id="pinScreen" class="pin-screen">
+    <h2 data-nl="Welkom" data-en="Welcome">Welkom</h2>
+    <p data-nl="Voer uw pincode in" data-en="Enter your PIN">Voer uw pincode in</p>
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+           id="pinInput" class="pin-input" placeholder="••••••" autocomplete="off">
+    <button class="pin-btn" onclick="doPinCheck()" data-nl="Bevestigen" data-en="Confirm">Bevestigen</button>
+    <div class="pin-error" id="pinError"></div>
+  </div>
+
+  <div id="formScreen" style="display:none;">
+    <div class="time-display" id="timeDisplay"></div>
+    <div class="user-badge">
+      <div>
+        <strong>👤 <span id="userName"></span></strong><br>
+        <span id="userRole"></span>
+      </div>
+      <button id="logoutBtn" data-nl="Uitloggen" data-en="Log out">Uitloggen</button>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section-label" data-nl="Locatie op de baan" data-en="Course Location">Locatie op de baan</div>
+    <div class="field">
+      <label>Holenummer / Zone <span class="req">*</span></label>
+      <div class="hole-grid" id="holeGrid"></div>
+    </div>
+    <div class="field">
+      <label data-nl="Specifieke locatie op de hole" data-en="Specific spot on hole">Specifieke locatie op de hole</label>
+      <div class="chip-group" id="spotGroup">
+        <button class="chip" data-spot="Tee">🏌️ Tee</button>
+        <button class="chip" data-spot="Fairway">🌿 Fairway</button>
+        <button class="chip" data-spot="Rough">🌾 Rough</button>
+        <button class="chip" data-spot="Bunker">🏖️ Bunker</button>
+        <button class="chip" data-spot="Green">🟢 Green</button>
+        <button class="chip" data-spot="Pad/Weg" data-en-spot="Path/Road">🛤️ Pad/Weg</button>
+        <button class="chip" data-spot="Algemeen" data-en-spot="General">📍 Algemeen</button>
+      </div>
+    </div>
+    <div class="field">
+      <label data-nl="GPS-coördinaat (optioneel)" data-en="GPS Coordinate (optional)">GPS-coördinaat (optioneel)</label>
+      <div class="gps-row">
+        <button class="gps-btn" id="gpsBtn" onclick="getGPS()" data-nl="📍 Locatie ophalen" data-en="📍 Get Location">📍 Locatie ophalen</button>
+        <span class="gps-result" id="gpsResult" data-nl="Nog niet opgehaald" data-en="Not yet retrieved">Nog niet opgehaald</span>
+      </div>
+      <input type="text" id="gpsInput" style="margin-top:8px;display:none;" placeholder="lat, lng" readonly>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section-label">Categorie <span style="color:var(--gold)">*</span></div>
+    <div class="field">
+      <div class="chip-group" id="catGroup">
+        <button class="chip" data-cat="Greens">🟢 Greens</button>
+        <button class="chip" data-cat="Fairway">🌿 Fairway</button>
+        <button class="chip" data-cat="Bunkers">🏖️ Bunkers</button>
+        <button class="chip" data-cat="Rough">🌾 Rough</button>
+        <button class="chip" data-cat="Paden/Wegen" data-en-cat="Paths/Roads">🛤️ Paden/Wegen</button>
+        <button class="chip" data-cat="Bebording" data-en-cat="Signage">🪧 Bebording</button>
+        <button class="chip" data-cat="Infrastructuur" data-en-cat="Infrastructure">🏠 Infrastructuur</button>
+        <button class="chip" data-cat="Bewatering" data-en-cat="Irrigation">💧 Bewatering</button>
+        <button class="chip" data-cat="Bomen/Struiken" data-en-cat="Trees/Shrubs">🌳 Bomen/Struiken</button>
+        <button class="chip" data-cat="Veiligheid" data-en-cat="Safety">⚠️ Veiligheid</button>
+        <button class="chip" data-cat="Suggestie" data-en-cat="Suggestion">💡 Suggestie</button>
+        <button class="chip" data-cat="Andere" data-en-cat="Other">📋 Andere</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section-label">Prioriteit <span style="color:var(--gold)">*</span></div>
+    <div class="field">
+      <div class="prio-row">
+        <button class="prio-btn low" data-prio="Laag">🟢 <span data-nl="Laag" data-en="Low">Laag</span></button>
+        <button class="prio-btn med" data-prio="Gemiddeld">🟡 <span data-nl="Gemiddeld" data-en="Medium">Gemiddeld</span></button>
+        <button class="prio-btn high" data-prio="Hoog">🟠 <span data-nl="Hoog" data-en="High">Hoog</span></button>
+        <button class="prio-btn urgent" data-prio="Urgent">🔴 Urgent</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section-label" data-nl="Details" data-en="Details">Details</div>
+    <div class="field">
+      <label>Beschrijving <span class="req">*</span></label>
+      <textarea id="description" data-nl-placeholder="Beschrijf het probleem of de suggestie duidelijk…" data-en-placeholder="Describe the issue or suggestion clearly…" placeholder="Beschrijf het probleem of de suggestie duidelijk…"></textarea>
+    </div>
+    <div class="field">
+      <label data-nl="Voorgestelde actie (optioneel)" data-en="Suggested action (optional)">Voorgestelde actie (optioneel)</label>
+      <select id="actionSuggested">
+        <option value="">— Selecteer indien van toepassing —</option>
+        <option data-nl="Dringende herstelling nodig" data-en="Urgent repair needed">Dringende herstelling nodig</option>
+        <option data-nl="Gepland onderhoud inplannen" data-en="Schedule planned maintenance">Gepland onderhoud inplannen</option>
+        <option data-nl="Inspectie vereist" data-en="Inspection required">Inspectie vereist</option>
+        <option data-nl="Tijdelijk signaliseren" data-en="Temporary signage needed">Tijdelijk signaliseren</option>
+        <option data-nl="Ter informatie / opvolging" data-en="For information / follow-up">Ter informatie / opvolging</option>
+        <option data-nl="Suggestie voor verbetering" data-en="Improvement suggestion">Suggestie voor verbetering</option>
+        <option data-nl="Anders (zie beschrijving)" data-en="Other (see description)">Anders (zie beschrijving)</option>
+      </select>
+    </div>
+    <button class="submit-btn" id="submitBtn">Rapport verzenden →</button>
+  </div>
+
+  <div id="successScreen" class="success-screen">
+    <div class="success-icon">✅</div>
+    <h2 data-nl="Rapport verzonden" data-en="Report Submitted">Rapport verzonden</h2>
+    <p data-nl="Uw rapport is vastgelegd. Bedankt." data-en="Your report has been recorded. Thank you.">Uw rapport is vastgelegd. Bedankt.</p>
+    <button class="new-report-btn" id="newReportBtn">Nieuw rapport indienen</button>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  Baan rapporten worden veilig opgeslagen.<br>
+  Course reports are securely stored.<br>
+  <span style="font-size:1.1em;"><a href="tel:+3216651216">+32 16 65 12 16</a></span>
+</div>
+
+<script>
+var WEBHOOK = "https://hook.eu1.make.com/grgvft8eqw4w7i5jvmyr69snc6zqm17q";
+
+var USERS = {
+  "111111": { name: "Course Director",  role: "Course Director",    roleEn: "Course Director" },
+  "222222": { name: "Head Marshal",     role: "Head Marshal",       roleEn: "Head Marshal" },
+  "333333": { name: "Captain",          role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)" },
+  "444444": { name: "Men's Captain",    role: "Herenkaptein",       roleEn: "Men's Captain" },
+  "555555": { name: "Ladies' Captain",  role: "Dameskaptein",       roleEn: "Ladies' Captain" },
+  "666666": { name: "Junior Captain",   role: "Juniorkaptein",      roleEn: "Junior Captain" },
+  "777777": { name: "Starters Captain", role: "Starterskaptein",    roleEn: "Starters Captain" },
+  "888888": { name: "Seniors Captain",  role: "Seniorenkaptein",    roleEn: "Seniors Captain" },
+  "999999": { name: "Manager",          role: "Manager",            roleEn: "Manager" },
+  "100100": { name: "John Philip",      role: "Head Pro",           roleEn: "Head Pro" }
+};
+
+var lang = 'nl';
+var currentUser = null;
+var selectedHole = null;
+var selectedSpot = null;
+var selectedCat = null;
+var selectedPrio = null;
+var gpsCoords = null;
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent === l.toUpperCase());
+  });
+  document.querySelectorAll('[data-nl]').forEach(function(el) {
+    var val = el.getAttribute('data-' + l);
+    if (val) el.innerHTML = val;
+  });
+  document.querySelectorAll('textarea[data-nl-placeholder]').forEach(function(el) {
+    el.placeholder = el.getAttribute('data-' + l + '-placeholder') || el.placeholder;
+  });
+  document.querySelectorAll('select option[data-nl]').forEach(function(opt) {
+    var val = opt.getAttribute('data-' + l);
+    if (val) opt.textContent = val;
+  });
+  document.querySelectorAll('.chip[data-en-spot]').forEach(function(c) {
+    var emoji = c.textContent.split(' ')[0];
+    c.textContent = emoji + ' ' + (l === 'en' ? c.getAttribute('data-en-spot') : c.getAttribute('data-spot'));
+  });
+  document.querySelectorAll('.chip[data-en-cat]').forEach(function(c) {
+    var emoji = c.textContent.split(' ')[0];
+    c.textContent = emoji + ' ' + (l === 'en' ? c.getAttribute('data-en-cat') : c.getAttribute('data-cat'));
+  });
+  updateDate();
+}
+
+function updateDate() {
+  var now = new Date();
+  var dagenNl = ["zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"];
+  var dagenEn = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var maandenNl = ["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+  var maandenEn = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var dagen = lang === 'nl' ? dagenNl : dagenEn;
+  var maanden = lang === 'nl' ? maandenNl : maandenEn;
+  document.getElementById("dateDisplay").textContent =
+    dagen[now.getDay()] + " " + now.getDate() + " " + maanden[now.getMonth()] + " " + now.getFullYear();
+  if (document.getElementById("timeDisplay")) {
+    document.getElementById("timeDisplay").textContent =
+      (lang === 'nl' ? "Tijd: " : "Time: ") +
+      String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
+  }
+}
+updateDate();
+setInterval(updateDate, 30000);
+
+function doPinCheck() {
+  var pin = document.getElementById("pinInput").value.trim();
+  var errEl = document.getElementById("pinError");
+  if (USERS[pin]) {
+    currentUser = USERS[pin];
+    document.getElementById("userName").textContent = currentUser.name;
+    document.getElementById("userRole").textContent = lang === 'nl' ? currentUser.role : currentUser.roleEn;
+    document.getElementById("pinScreen").style.display = "none";
+    document.getElementById("formScreen").style.display = "block";
+    document.getElementById("pinInput").value = "";
+    errEl.textContent = "";
+  } else {
+    errEl.textContent = lang === 'nl' ? "Ongeldige pincode. Probeer opnieuw." : "Invalid PIN. Please try again.";
+    document.getElementById("pinInput").value = "";
+  }
+}
+document.getElementById("pinInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") doPinCheck();
+});
+
+document.getElementById("logoutBtn").addEventListener("click", function() {
+  currentUser = null; selectedHole = null; selectedSpot = null; selectedCat = null; selectedPrio = null; gpsCoords = null;
+  document.getElementById("pinScreen").style.display = "block";
+  document.getElementById("formScreen").style.display = "none";
+  document.getElementById("successScreen").classList.remove("visible");
+  resetForm();
+});
+
+var holeGrid = document.getElementById("holeGrid");
+for (var i = 1; i <= 18; i++) {
+  (function(n) {
+    var btn = document.createElement("button");
+    btn.className = "hole-btn";
+    btn.textContent = n;
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      selectedHole = n;
+    });
+    holeGrid.appendChild(btn);
+  })(i);
+}
+
+var genBtn = document.createElement("button");
+genBtn.className = "hole-btn general";
+genBtn.setAttribute("data-nl", "🏠 Algemeen / Clubhuis");
+genBtn.setAttribute("data-en", "🏠 General / Clubhouse");
+genBtn.textContent = "🏠 Algemeen / Clubhuis";
+genBtn.addEventListener("click", function() {
+  document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
+  genBtn.classList.add("active");
+  selectedHole = lang === 'nl' ? "Algemeen/Clubhuis" : "General/Clubhouse";
+});
+holeGrid.appendChild(genBtn);
+
+var drBtn = document.createElement("button");
+drBtn.className = "hole-btn general";
+drBtn.setAttribute("data-nl", "🎯 Driving Range");
+drBtn.setAttribute("data-en", "🎯 Driving Range");
+drBtn.textContent = "🎯 Driving Range";
+drBtn.addEventListener("click", function() {
+  document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
+  drBtn.classList.add("active");
+  selectedHole = "Driving Range";
+});
+holeGrid.appendChild(drBtn);
+
+var phBtn = document.createElement("button");
+phBtn.className = "hole-btn general";
+phBtn.setAttribute("data-nl", "⛳ Oefenholes");
+phBtn.setAttribute("data-en", "⛳ Practice Holes");
+phBtn.textContent = "⛳ Oefenholes";
+phBtn.addEventListener("click", function() {
+  document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
+  phBtn.classList.add("active");
+  selectedHole = lang === 'nl' ? "Oefenholes" : "Practice Holes";
+});
+holeGrid.appendChild(phBtn);
+
+document.querySelectorAll("#spotGroup .chip").forEach(function(chip) {
+  chip.addEventListener("click", function() {
+    document.querySelectorAll("#spotGroup .chip").forEach(function(c) { c.classList.remove("active"); });
+    chip.classList.add("active");
+    selectedSpot = chip.getAttribute("data-spot");
+  });
+});
+
+document.querySelectorAll("#catGroup .chip").forEach(function(chip) {
+  chip.addEventListener("click", function() {
+    document.querySelectorAll("#catGroup .chip").forEach(function(c) { c.classList.remove("active"); });
+    chip.classList.add("active");
+    selectedCat = chip.getAttribute("data-cat");
+  });
+});
+
+document.querySelectorAll(".prio-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".prio-btn").forEach(function(b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    selectedPrio = btn.getAttribute("data-prio");
+  });
+});
+
+function getGPS() {
+  var btn = document.getElementById("gpsBtn");
+  var result = document.getElementById("gpsResult");
+  btn.textContent = lang === 'nl' ? "⏳ Ophalen…" : "⏳ Retrieving…";
+  if (!navigator.geolocation) {
+    result.textContent = lang === 'nl' ? "GPS niet beschikbaar" : "GPS not available";
+    btn.textContent = lang === 'nl' ? "📍 Locatie ophalen" : "📍 Get Location";
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude.toFixed(6);
+    var lng = pos.coords.longitude.toFixed(6);
+    gpsCoords = lat + ", " + lng;
+    document.getElementById("gpsInput").value = gpsCoords;
+    document.getElementById("gpsInput").style.display = "block";
+    result.textContent = "✅ " + gpsCoords;
+    result.className = "gps-result found";
+    btn.textContent = lang === 'nl' ? "📍 Vernieuwen" : "📍 Refresh";
+  }, function() {
+    result.textContent = lang === 'nl' ? "Locatie niet beschikbaar" : "Location unavailable";
+    btn.textContent = lang === 'nl' ? "📍 Locatie ophalen" : "📍 Get Location";
+  });
+}
+
+document.getElementById("submitBtn").addEventListener("click", function() {
+  var description = document.getElementById("description").value.trim();
+  if (!selectedHole) { alert(lang === 'nl' ? "Selecteer een holenummer of zone." : "Select a hole number or zone."); return; }
+  if (!selectedCat)  { alert(lang === 'nl' ? "Selecteer een categorie." : "Select a category."); return; }
+  if (!selectedPrio) { alert(lang === 'nl' ? "Selecteer een prioriteit." : "Select a priority."); return; }
+  if (!description)  { alert(lang === 'nl' ? "Voer een beschrijving in." : "Enter a description."); return; }
+
+  var btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.textContent = lang === 'nl' ? "Verzenden…" : "Submitting…";
+
+  var payload = {
+    timestamp:   new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
+    reporter:    currentUser.name,
+    role:        currentUser.role,
+    language:    lang.toUpperCase(),
+    hole:        selectedHole,
+    spot:        selectedSpot || "—",
+    gps:         gpsCoords || "—",
+    category:    selectedCat,
+    priority:    selectedPrio,
+    description: description,
+    action:      document.getElementById("actionSuggested").value || "—"
+  };
+
+  fetch(WEBHOOK, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  }).then(function() {
+    document.getElementById("formScreen").style.display = "none";
+    document.getElementById("successScreen").classList.add("visible");
+  }).catch(function() {
+    alert(lang === 'nl' ? "Kon niet verzenden. Controleer uw internetverbinding." : "Could not submit. Check your internet connection.");
+    btn.disabled = false;
+    btn.textContent = lang === 'nl' ? "Rapport verzenden →" : "Submit Report →";
+  });
+});
+
+document.getElementById("newReportBtn").addEventListener("click", function() {
+  resetForm();
+  document.getElementById("formScreen").style.display = "block";
+  document.getElementById("successScreen").classList.remove("visible");
+  document.getElementById("submitBtn").disabled = false;
+  document.getElementById("submitBtn").textContent = lang === 'nl' ? "Rapport verzenden →" : "Submit Report →";
+});
+
+function resetForm() {
+  selectedHole = null; selectedSpot = null; selectedCat = null; selectedPrio = null; gpsCoords = null;
+  document.getElementById("description").value = "";
+  document.getElementById("actionSuggested").value = "";
+  document.getElementById("gpsInput").value = "";
+  document.getElementById("gpsInput").style.display = "none";
+  document.getElementById("gpsResult").textContent = lang === 'nl' ? "Nog niet opgehaald" : "Not yet retrieved";
+  document.getElementById("gpsResult").className = "gps-result";
+  document.getElementById("gpsBtn").textContent = lang === 'nl' ? "📍 Locatie ophalen" : "📍 Get Location";
+  document.querySelectorAll(".hole-btn,.chip,.prio-btn").forEach(function(b) { b.classList.remove("active"); });
+}
+</script>
+</body>
+</html>
