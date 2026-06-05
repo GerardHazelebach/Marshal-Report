@@ -162,21 +162,21 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 <script>
 var WEBHOOK = "https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3";
 
-// Pincodes — eenvoudige vergelijking
 var PINS = {
-  "112233": "Colin Smith",
-  "223344": "Dora Hinoul",
-  "334455": "Gerard Hazelebach",
-  "445566": "Jan Leys",
-  "556677": "Johan Moens",
-  "667788": "Lieven Spoo",
-  "778899": "Luc Van Den Bergh",
-  "889900": "Patrick Aelbrecht",
-  "900112": "Peter H. Peeters",
-  "100223": "Rita De Pauw"
+  "361500": { name: "Gerard Hazelebach", email: "gerard.hazelebach@telenet.be" },
+  "280802": { name: "Luc Van Den Bergh", email: "vandenberghluc@gmail.com" },
+  "196000": { name: "Colin Smith",       email: "smith43@skynet.be" },
+  "202601": { name: "Dora Hinoul",       email: "dhinoul@hotmail.com" },
+  "635241": { name: "Jan Leys",          email: "janleys@hotmail.com" },
+  "396500": { name: "Johan Moens",       email: "johanmoens@pm.me" },
+  "241256": { name: "Lieven Spoo",       email: "lieven@spoo.be" },
+  "302130": { name: "Patrick Aelbrecht", email: "pat.aelbrecht@gmail.com" },
+  "112358": { name: "Peter H. Peeters",  email: "peter.h.peetrs@gmail.com" },
+  "240465": { name: "Rita De Pauw",      email: "rita_depauw@msn.com" }
 };
 
 var marshal = null;
+var marshalEmail = null;
 var hole = null;
 var rapportType = null;
 var ernst = null;
@@ -198,7 +198,8 @@ setInterval(updateDate, 30000);
 function doPinCheck() {
   var pin = document.getElementById("pinInput").value.trim();
   if (PINS[pin]) {
-    marshal = PINS[pin];
+    marshal = PINS[pin].name;
+    marshalEmail = PINS[pin].email;
     document.getElementById("marshalName").textContent = marshal;
     document.getElementById("pinScreen").style.display = "none";
     document.getElementById("formScreen").style.display = "block";
@@ -216,7 +217,7 @@ document.getElementById("pinInput").addEventListener("keydown", function(e) {
 
 // Uitloggen
 document.getElementById("logoutBtn").addEventListener("click", function() {
-  marshal = null; hole = null; rapportType = null; ernst = null;
+  marshal = null; marshalEmail = null; hole = null; rapportType = null; ernst = null;
   document.getElementById("pinScreen").style.display = "block";
   document.getElementById("formScreen").style.display = "none";
   document.getElementById("successScreen").classList.remove("visible");
@@ -269,14 +270,15 @@ document.getElementById("submitBtn").addEventListener("click", function() {
   btn.textContent = "Verzenden…";
 
   var payload = {
-    timestamp:  new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
-    marshal:    marshal,
-    hole:       hole,
-    reportType: rapportType,
-    severity:   ernst || "Niet opgegeven",
-    groupId:    document.getElementById("groupId").value.trim() || "—",
-    notes:      notes,
-    action:     document.getElementById("actionTaken").value || "Geen actie vastgelegd"
+    timestamp:    new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
+    marshal:      marshal,
+    marshalEmail: marshalEmail,
+    hole:         hole,
+    reportType:   rapportType,
+    severity:     ernst || "Niet opgegeven",
+    groupId:      document.getElementById("groupId").value.trim() || "—",
+    notes:        notes,
+    action:       document.getElementById("actionTaken").value || "Geen actie vastgelegd"
   };
 
   fetch(WEBHOOK, {
