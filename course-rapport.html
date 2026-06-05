@@ -173,7 +173,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
       <select id="actionSuggested">
         <option value="" data-nl="— Selecteer indien van toepassing —" data-en="— Select if applicable —">— Selecteer indien van toepassing —</option>
         <option data-nl="Dringende herstelling nodig" data-en="Urgent repair needed">Dringende herstelling nodig</option>
-        <option data-nl="Onderhoud inplannen" data-en="Schedule maintenance">Onderhoud inplannen</option>
+        <option data-nl="Onderhoud inplannen" data-en="Schedule planned maintenance">Onderhoud inplannen</option>
         <option data-nl="Inspectie vereist" data-en="Inspection required">Inspectie vereist</option>
         <option data-nl="Tijdelijk signaliseren" data-en="Temporary signage needed">Tijdelijk signaliseren</option>
         <option data-nl="Ter informatie / opvolging" data-en="For information / follow-up">Ter informatie / opvolging</option>
@@ -203,16 +203,16 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 var WEBHOOK = "https://hook.eu1.make.com/grgvft8eqw4w7i5jvmyr69snc6zqm17q";
 
 var USERS = {
-  "111111": { name: "Course Director",  role: "Course Director",     roleEn: "Course Director" },
-  "222222": { name: "Head Marshal",     role: "Head Marshal",        roleEn: "Head Marshal" },
-  "333333": { name: "Captain",          role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)" },
-  "444444": { name: "Men's Captain",    role: "Herenkaptein",        roleEn: "Men's Captain" },
-  "555555": { name: "Ladies' Captain",  role: "Dameskaptein",        roleEn: "Ladies' Captain" },
-  "666666": { name: "Junior Captain",   role: "Juniorkaptein",       roleEn: "Junior Captain" },
-  "777777": { name: "Starters Captain", role: "Starterskaptein",     roleEn: "Starters Captain" },
-  "888888": { name: "Seniors Captain",  role: "Seniorenkaptein",     roleEn: "Seniors Captain" },
-  "999999": { name: "Manager",          role: "Manager",             roleEn: "Manager" },
-  "100100": { name: "John Philip",      role: "Head Pro",            roleEn: "Head Pro" }
+  "111111": { name: "Andrew Bolton",        role: "Course Director",     roleEn: "Course Director",   email: "bolton.andrew@telenet.be" },
+  "222222": { name: "Gerard Hazelebach",    role: "Head Marshal",        roleEn: "Head Marshal",      email: "gerard.hazelebach@telenet.be" },
+  "333333": { name: "Marc De Graef",        role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)", email: "captain@golfclubkampenhout.com" },
+  "444444": { name: "Dirk Ibens",           role: "Herenkaptein",        roleEn: "Men's Captain",   email: "mens.captain@golfclubkampenhout.com" },
+  "555555": { name: "Karin Geens",          role: "Dameskaptein",        roleEn: "Ladies' Captain", email: "ladies.captain@golfclubkampenhout.com" },
+  "666666": { name: "Luc Artois",           role: "Juniorkaptein",       roleEn: "Juniors Captain",  email: "juniors.captain@golfclubkampenhout.com" },
+  "777777": { name: "Peter Meurs",          role: "Starterskaptein",     roleEn: "Starters Captain", email: "starters.captain@golfclubkampenhout.com" },
+  "888888": { name: "Henk de Wyspelaere",   role: "Seniorenkaptein",     roleEn: "Seniors Captain",  email: "seniors.captain@golfclubkampenhout.com" },
+  "999999": { name: "Marc De Cock",         role: "Manager",             roleEn: "Manager",           email: "secretariaat@golfclubkampenhout.com" },
+  "100100": { name: "John Philip",         role: "Head Pro",            roleEn: "Head Pro",          email: "john.philip@telenet.be" }
 };
 
 var lang = 'nl';
@@ -414,6 +414,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
   var payload = {
     timestamp:   new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
     reporter:    currentUser.name,
+    reporterEmail: currentUser.email,
     role:        currentUser.role,
     language:    lang.toUpperCase(),
     hole:        selectedHole,
