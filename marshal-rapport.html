@@ -165,16 +165,16 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 var WEBHOOK = "https://hook.eu1.make.com/yc9q62urfi6fgwz4v5vskelaqoemsse3";
 
 var PINS = {
-  "361500": { name: "Gerard Hazelebach", email: "gerard.hazelebach@telenet.be" },
-  "280802": { name: "Luc Van Den Bergh", email: "vandenberghluc@gmail.com" },
-  "196000": { name: "Colin Smith",       email: "smith43@skynet.be" },
-  "202601": { name: "Dora Hinoul",       email: "dhinoul@hotmail.com" },
-  "635241": { name: "Jan Leys",          email: "janleys@hotmail.com" },
-  "396500": { name: "Johan Moens",       email: "johanmoens@pm.me" },
-  "241256": { name: "Lieven Spoo",       email: "lieven@spoo.be" },
-  "302130": { name: "Patrick Aelbrecht", email: "pat.aelbrecht@gmail.com" },
-  "112358": { name: "Peter H. Peeters",  email: "peter.h.peetrs@gmail.com" },
-  "240465": { name: "Rita De Pauw",      email: "rita_depauw@msn.com" }
+  "a5dac27af014a51719f84d3a92bf525f76d30955ad44e084fc9daea43782987c": { name: "Gerard Hazelebach", email: "gerard.hazelebach@telenet.be" },
+  "666e70f8e33e361620d419972d757da3e5f3aaec6da2e2662fb7e8343ca2cbb7": { name: "Luc Van Den Bergh", email: "vandenberghluc@gmail.com" },
+  "edfbdbf2770d645b05a378a3c031956d5cfe719973ce1ee021aeba984f806ed5": { name: "Colin Smith", email: "smith43@skynet.be" },
+  "9f36d8b555d70dad5cdf620ac2a8fc36f6ffc0a44a58fb1ba600bd230b4ee660": { name: "Dora Hinoul", email: "dhinoul@hotmail.com" },
+  "0358f6aa59788a6deebad09b3ab91f6f7dcd17363c621064be75e7a8bc588a74": { name: "Jan Leys", email: "janleys@hotmail.com" },
+  "1ac9f4d536cfe2a9a2010ba37a8b9682cae1c7b33449464149360ef5c12a9d9d": { name: "Johan Moens", email: "johanmoens@pm.me" },
+  "7e7af015c3e68efd64a4529a525cf3a20d6289a7a37b55e1f243683fa58d3d13": { name: "Lieven Spoo", email: "lieven@spoo.be" },
+  "25c5d959a899f876ee43dbd08b24a397dbcbf704b9bf5a7c86a9be21cc2bb2db": { name: "Patrick Aelbrecht", email: "pat.aelbrecht@gmail.com" },
+  "00390de2b7074071bb6494e818e84884ef6331ceb0b1e70948bde3ef4ba57b92": { name: "Peter H. Peeters", email: "peter.h.peetrs@gmail.com" },
+  "e7dcd3cd45a1401fcb1875a06c69471ae04c7343079e5ba9dd09b06e6f8f79ea": { name: "Rita De Pauw", email: "rita_depauw@msn.com" }
 };
 
 var marshal = null;
@@ -197,11 +197,15 @@ updateDate();
 setInterval(updateDate, 30000);
 
 // PIN
-function doPinCheck() {
+async function doPinCheck() {
   var pin = document.getElementById("pinInput").value.trim();
-  if (PINS[pin]) {
-    marshal = PINS[pin].name;
-    marshalEmail = PINS[pin].email;
+  var msgBuffer = new TextEncoder().encode(pin);
+  var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  var hashArray = Array.from(new Uint8Array(hashBuffer));
+  var hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  if (PINS[hash]) {
+    marshal = PINS[hash].name;
+    marshalEmail = PINS[hash].email;
     document.getElementById("marshalName").textContent = marshal;
     document.getElementById("pinScreen").style.display = "none";
     document.getElementById("formScreen").style.display = "block";
