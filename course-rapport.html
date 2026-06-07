@@ -38,11 +38,10 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 8px 14px; border-radius: 50px; border: 1.5px solid #d5e0d8; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; color: var(--tm); cursor: pointer; transition: all 0.15s; }
 .chip.active { background: var(--gd); border-color: var(--gd); color: var(--w); }
-.prio-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.prio-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .prio-btn { padding: 10px 4px; border-radius: 10px; border: 1.5px solid #d5e0d8; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; color: var(--tl); letter-spacing: 0.3px; }
 .prio-btn.low.active    { background: #e8f5e9; border-color: #4caf50; color: var(--low); }
 .prio-btn.med.active    { background: #fff8e1; border-color: #ffc107; color: var(--med); }
-.prio-btn.high.active   { background: #fff3e0; border-color: #ff9800; color: var(--high); }
 .prio-btn.urgent.active { background: #ffebee; border-color: #ef5350; color: var(--urgent); }
 .gps-row { display: flex; gap: 10px; align-items: center; }
 .gps-btn { flex-shrink: 0; padding: 12px 16px; background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; color: var(--gm); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
@@ -61,7 +60,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 .success-screen h2 { font-family: Georgia, 'Times New Roman', serif; color: var(--gd); font-size: 22px; margin-bottom: 8px; }
 .success-screen p { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--tm); font-size: 14px; }
 .new-report-btn { margin-top: 24px; padding: 13px 32px; background: var(--gp); color: var(--gd); border: 1.5px solid var(--gl); border-radius: 50px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
-.logout-success-btn { margin-top: 12px; padding: 10px 28px; background: transparent; color: var(--tl); border: 1.5px solid #d5e0d8; border-radius: 50px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; display: block; margin: 12px auto 0; }
+.logout-success-btn { margin-top: 12px; padding: 10px 28px; background: transparent; color: var(--tl); border: 1.5px solid #d5e0d8; border-radius: 50px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; display: block; margin: 12px auto 0; }
 .footer-note { text-align: center; color: rgba(255,255,255,0.75); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; margin-top: 20px; padding: 0 24px; line-height: 1.6; }
 .footer-note a { color: #ffffff; text-decoration: none; }
 .pin-screen { text-align: center; padding: 10px 0 20px; }
@@ -174,7 +173,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
       <select id="actionSuggested">
         <option value="" data-nl="— Selecteer indien van toepassing —" data-en="— Select if applicable —">— Selecteer indien van toepassing —</option>
         <option data-nl="Dringende herstelling nodig" data-en="Urgent repair needed">Dringende herstelling nodig</option>
-        <option data-nl="Onderhoud inplannen" data-en="Schedule planned maintenance">Onderhoud inplannen</option>
+        <option data-nl="Onderhoud inplannen" data-en="Schedule maintenance">Onderhoud inplannen</option>
         <option data-nl="Inspectie vereist" data-en="Inspection required">Inspectie vereist</option>
         <option data-nl="Tijdelijk signaliseren" data-en="Temporary signage needed">Tijdelijk signaliseren</option>
         <option data-nl="Ter informatie / opvolging" data-en="For information / follow-up">Ter informatie / opvolging</option>
@@ -205,16 +204,16 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 var WEBHOOK = "https://hook.eu1.make.com/grgvft8eqw4w7i5jvmyr69snc6zqm17q";
 
 var USERS = {
-  "111111": { name: "Andrew Bolton",        role: "Course Director",     roleEn: "Course Director",   email: "bolton.andrew@telenet.be" },
-  "222222": { name: "Gerard Hazelebach",    role: "Head Marshal",        roleEn: "Head Marshal",      email: "gerard.hazelebach@telenet.be" },
-  "333333": { name: "Marc De Graef",        role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)", email: "captain@golfclubkampenhout.com" },
-  "444444": { name: "Dirk Ibens",           role: "Herenkaptein",        roleEn: "Men's Captain",   email: "mens.captain@golfclubkampenhout.com" },
-  "555555": { name: "Karin Geens",          role: "Dameskaptein",        roleEn: "Ladies' Captain", email: "ladies.captain@golfclubkampenhout.com" },
-  "666666": { name: "Luc Artois",           role: "Juniorkaptein",       roleEn: "Juniors Captain",  email: "juniors.captain@golfclubkampenhout.com" },
-  "777777": { name: "Peter Meurs",          role: "Starterskaptein",     roleEn: "Starters Captain", email: "starters.captain@golfclubkampenhout.com" },
-  "888888": { name: "Henk de Wyspelaere",   role: "Seniorenkaptein",     roleEn: "Seniors Captain",  email: "seniors.captain@golfclubkampenhout.com" },
-  "999999": { name: "Marc De Cock",         role: "Manager",             roleEn: "Manager",           email: "secretariaat@golfclubkampenhout.com" },
-  "100100": { name: "John Philip",         role: "Head Pro",            roleEn: "Head Pro",          email: "john.philip@telenet.be" }
+  "111111": { name: "Andrew Bolton",      role: "Course Director",     roleEn: "Course Director",   email: "bolton.andrew@telenet.be" },
+  "222222": { name: "Gerard Hazelebach",  role: "Head Marshal",        roleEn: "Head Marshal",      email: "gerard.hazelebach@telenet.be" },
+  "333333": { name: "Marc De Graef",      role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)", email: "captain@golfclubkampenhout.com" },
+  "444444": { name: "Dirk Ibens",         role: "Herenkaptein",        roleEn: "Men's Captain",     email: "mens.captain@golfclubkampenhout.com" },
+  "555555": { name: "Karin Geens",        role: "Dameskaptein",        roleEn: "Ladies' Captain",   email: "ladies.captain@golfclubkampenhout.com" },
+  "666666": { name: "Luc Artois",         role: "Juniorkaptein",       roleEn: "Juniors Captain",   email: "juniors.captain@golfclubkampenhout.com" },
+  "777777": { name: "Peter Meurs",        role: "Starterskaptein",     roleEn: "Starters Captain",  email: "starters.captain@golfclubkampenhout.com" },
+  "888888": { name: "Henk de Wyspelaere", role: "Seniorenkaptein",     roleEn: "Seniors Captain",   email: "seniors.captain@golfclubkampenhout.com" },
+  "999999": { name: "Marc De Cock",       role: "Manager",             roleEn: "Manager",           email: "secretariaat@golfclubkampenhout.com" },
+  "100100": { name: "John Philip",        role: "Head Pro",            roleEn: "Head Pro",          email: "john.philip@telenet.be" }
 };
 
 var lang = 'nl';
@@ -248,9 +247,6 @@ function setLang(l) {
   document.querySelectorAll('.chip[data-en-cat]').forEach(function(c) {
     var emoji = c.textContent.split(' ')[0];
     c.textContent = emoji + ' ' + (l === 'en' ? c.getAttribute('data-en-cat') : c.getAttribute('data-cat'));
-  });
-  document.querySelectorAll('[data-nl-text]').forEach(function(el) {
-    el.textContent = l === 'en' ? el.getAttribute('data-en-text') : el.getAttribute('data-nl-text');
   });
   updateDate();
 }
@@ -414,19 +410,19 @@ document.getElementById("submitBtn").addEventListener("click", function() {
   btn.textContent = lang === 'nl' ? "Verzenden…" : "Submitting…";
 
   var payload = {
-    timestamp:   new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
-    reporter:    currentUser.name,
+    timestamp:     new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
+    reporter:      currentUser.name,
     reporterEmail: currentUser.email,
-    role:        currentUser.role,
-    language:    lang.toUpperCase(),
-    hole:        selectedHole,
-    spot:        selectedSpot || "—",
-    gpsLat:      gpsCoords ? gpsCoords.split(", ")[0] : "—",
-    gpsLng:      gpsCoords ? gpsCoords.split(", ")[1] : "—",
-    category:    selectedCat,
-    priority:    selectedPrio,
-    description: description,
-    action:      document.getElementById("actionSuggested").value || "—"
+    role:          currentUser.role,
+    language:      lang.toUpperCase(),
+    hole:          selectedHole,
+    spot:          selectedSpot || "—",
+    gpsLat:        gpsCoords ? gpsCoords.split(", ")[0] : "—",
+    gpsLng:        gpsCoords ? gpsCoords.split(", ")[1] : "—",
+    category:      selectedCat,
+    priority:      selectedPrio,
+    description:   description,
+    action:        document.getElementById("actionSuggested").value || "—"
   };
 
   fetch(WEBHOOK, {
