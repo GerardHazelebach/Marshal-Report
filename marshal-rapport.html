@@ -39,6 +39,10 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 .sev-btn.low.active  { background: #e8f5e9; border-color: #4caf50; color: #2e7d32; }
 .sev-btn.med.active  { background: #fff8e1; border-color: #ffc107; color: #e65100; }
 .sev-btn.high.active { background: #ffebee; border-color: #ef5350; color: #c62828; }
+.gps-row { display: flex; align-items: center; gap: 10px; }
+.gps-btn { padding: 10px 16px; background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; color: var(--gd); cursor: pointer; white-space: nowrap; }
+.gps-result { font-size: 13px; color: var(--tl); }
+.gps-result.found { color: var(--gl); font-weight: 600; }
 .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gm), var(--gd)); color: var(--w); border: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; }
 .submit-btn:disabled { opacity: 0.6; }
 .time-display { font-size: 13px; color: var(--tl); text-align: right; margin-bottom: 18px; }
@@ -96,6 +100,14 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="field">
       <label>Holenummer <span class="req">*</span></label>
       <div class="hole-grid" id="holeGrid"></div>
+    </div>
+    <div class="field">
+      <label>GPS-coördinaat <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
+      <div class="gps-row">
+        <button class="gps-btn" id="gpsBtn" onclick="getGPS()">📍 Locatie ophalen</button>
+        <span class="gps-result" id="gpsResult">Nog niet opgehaald</span>
+      </div>
+      <input type="text" id="gpsInput" style="margin-top:8px;display:none;" placeholder="lat, lng" readonly>
     </div>
     <div class="divider"></div>
 
@@ -182,6 +194,7 @@ var marshalEmail = null;
 var hole = null;
 var rapportType = null;
 var ernst = null;
+var gpsCoords = null;
 
 // Datum
 function updateDate() {
@@ -220,6 +233,35 @@ async function doPinCheck() {
 document.getElementById("pinInput").addEventListener("keydown", function(e) {
   if (e.key === "Enter") doPinCheck();
 });
+
+// GPS
+function getGPS() {
+  var btn = document.getElementById("gpsBtn");
+  var result = document.getElementById("gpsResult");
+  btn.textContent = "⏳ Ophalen…";
+  btn.disabled = true;
+  if (!navigator.geolocation) {
+    result.textContent = "GPS niet beschikbaar";
+    btn.textContent = "📍 Locatie ophalen";
+    btn.disabled = false;
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude.toFixed(6);
+    var lng = pos.coords.longitude.toFixed(6);
+    gpsCoords = lat + ", " + lng;
+    document.getElementById("gpsInput").value = gpsCoords;
+    document.getElementById("gpsInput").style.display = "block";
+    result.textContent = "✅ " + gpsCoords;
+    result.className = "gps-result found";
+    btn.textContent = "📍 Vernieuwen";
+    btn.disabled = false;
+  }, function() {
+    result.textContent = "Locatie niet beschikbaar";
+    btn.textContent = "📍 Locatie ophalen";
+    btn.disabled = false;
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
 
 // Uitloggen
 document.getElementById("logoutBtn").addEventListener("click", function() {
@@ -287,6 +329,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     marshal:      marshal,
     marshalEmail: marshalEmail,
     hole:         hole,
+    gps:          gpsCoords || "—",
     reportType:   rapportType,
     severity:     ernst || "Niet opgegeven",
     groupId:      document.getElementById("groupId").value.trim() || "—",
@@ -318,10 +361,15 @@ document.getElementById("newReportBtn").addEventListener("click", function() {
 });
 
 function resetForm() {
-  hole = null; rapportType = null; ernst = null;
+  hole = null; rapportType = null; ernst = null; gpsCoords = null;
   document.getElementById("groupId").value = "";
   document.getElementById("notes").value = "";
   document.getElementById("actionTaken").value = "";
+  document.getElementById("gpsInput").value = "";
+  document.getElementById("gpsInput").style.display = "none";
+  document.getElementById("gpsResult").textContent = "Nog niet opgehaald";
+  document.getElementById("gpsResult").className = "gps-result";
+  document.getElementById("gpsBtn").textContent = "📍 Locatie ophalen";
   document.querySelectorAll(".hole-btn,.chip,.sev-btn").forEach(function(b) { b.classList.remove("active"); });
 }
 </script>
