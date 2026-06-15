@@ -326,7 +326,7 @@ genBtn.textContent = "🏠 Algemeen / Clubhuis";
 genBtn.addEventListener("click", function() {
   document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
   genBtn.classList.add("active");
-  selectedHole = lang === 'nl' ? "Algemeen/Clubhuis" : "General/Clubhouse";
+  selectedHole = "Algemeen/Clubhuis";
 });
 holeGrid.appendChild(genBtn);
 
@@ -350,7 +350,7 @@ phBtn.textContent = "⛳ Oefenholes";
 phBtn.addEventListener("click", function() {
   document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
   phBtn.classList.add("active");
-  selectedHole = lang === 'nl' ? "Oefenholes" : "Practice Holes";
+  selectedHole = "Oefenholes";
 });
 holeGrid.appendChild(phBtn);
 
