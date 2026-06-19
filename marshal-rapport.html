@@ -304,6 +304,9 @@ document.querySelectorAll(".chip").forEach(function(chip) {
     document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
     chip.classList.add("active");
     rapportType = chip.getAttribute("data-type");
+    if (rapportType === "Start Marshallen") {
+      submitReport();
+    }
   });
 });
 
@@ -317,7 +320,7 @@ document.querySelectorAll(".sev-btn").forEach(function(btn) {
 });
 
 // Verzenden
-document.getElementById("submitBtn").addEventListener("click", function() {
+function submitReport() {
   var isStartShift = (rapportType === "Start Marshallen");
   var notes = document.getElementById("notes").value.trim();
   if (isStartShift && !notes) { notes = "Start Marshal"; }
@@ -358,7 +361,9 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     btn.disabled = false;
     btn.textContent = "Rapport verzenden →";
   });
-});
+}
+
+document.getElementById("submitBtn").addEventListener("click", submitReport);
 
 // Nieuw rapport
 document.getElementById("newReportBtn").addEventListener("click", function() {
