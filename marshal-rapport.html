@@ -195,6 +195,7 @@ var hole = null;
 var rapportType = null;
 var ernst = null;
 var gpsCoords = null;
+var loginTime = null;
 
 // Datum
 function updateDate() {
@@ -219,6 +220,7 @@ async function doPinCheck() {
   if (PINS[hash]) {
     marshal = PINS[hash].name;
     marshalEmail = PINS[hash].email;
+    loginTime = new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T');
     document.getElementById("marshalName").textContent = marshal;
     document.getElementById("pinScreen").style.display = "none";
     document.getElementById("formScreen").style.display = "block";
@@ -265,7 +267,7 @@ function getGPS() {
 
 // Uitloggen
 document.getElementById("logoutBtn").addEventListener("click", function() {
-  marshal = null; marshalEmail = null; hole = null; rapportType = null; ernst = null;
+  marshal = null; marshalEmail = null; hole = null; rapportType = null; ernst = null; loginTime = null;
   document.getElementById("pinScreen").style.display = "block";
   document.getElementById("formScreen").style.display = "none";
   document.getElementById("successScreen").classList.remove("visible");
@@ -273,7 +275,7 @@ document.getElementById("logoutBtn").addEventListener("click", function() {
 });
 
 document.getElementById("logoutSuccessBtn").addEventListener("click", function() {
-  marshal = null; marshalEmail = null; hole = null; rapportType = null; ernst = null;
+  marshal = null; marshalEmail = null; hole = null; rapportType = null; ernst = null; loginTime = null;
   document.getElementById("pinScreen").style.display = "block";
   document.getElementById("successScreen").classList.remove("visible");
   resetForm();
@@ -324,8 +326,10 @@ document.getElementById("submitBtn").addEventListener("click", function() {
   btn.disabled = true;
   btn.textContent = "Verzenden…";
 
+  var nowTimestamp = new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T');
+
   var payload = {
-    timestamp:    new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
+    timestamp:    nowTimestamp,
     marshal:      marshal,
     marshalEmail: marshalEmail,
     hole:         hole,
@@ -334,7 +338,9 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     severity:     ernst || "Niet opgegeven",
     groupId:      document.getElementById("groupId").value.trim() || "—",
     notes:        notes,
-    action:       document.getElementById("actionTaken").value || "Geen actie vastgelegd"
+    action:       document.getElementById("actionTaken").value || "Geen actie vastgelegd",
+    loginTime:    loginTime || "—",
+    logoutTime:   nowTimestamp
   };
 
   fetch(WEBHOOK, {
