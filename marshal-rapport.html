@@ -114,6 +114,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="section-label">Rapporttype <span class="req">*</span></div>
     <div class="field">
       <div class="chip-group" id="chipGroup">
+        <button class="chip" data-type="Start Marshallen">🟢 Start Marshallen</button>
         <button class="chip" data-type="Speelritme">⏱️ Speelritme</button>
         <button class="chip" data-type="Langzame groep">🐢 Langzame groep</button>
         <button class="chip" data-type="Gedrag speler">⚠️ Gedrag speler</button>
@@ -317,10 +318,12 @@ document.querySelectorAll(".sev-btn").forEach(function(btn) {
 
 // Verzenden
 document.getElementById("submitBtn").addEventListener("click", function() {
+  var isStartShift = (rapportType === "Start Marshallen");
   var notes = document.getElementById("notes").value.trim();
-  if (!hole)        { alert("Selecteer het holenummer."); return; }
-  if (!rapportType) { alert("Selecteer een rapporttype."); return; }
-  if (!notes)       { alert("Voer opmerkingen in."); return; }
+  if (isStartShift && !notes) { notes = "Start Marshal"; }
+  if (!hole && !isStartShift) { alert("Selecteer het holenummer."); return; }
+  if (!rapportType)           { alert("Selecteer een rapporttype."); return; }
+  if (!notes)                 { alert("Voer opmerkingen in."); return; }
 
   var btn = document.getElementById("submitBtn");
   btn.disabled = true;
@@ -332,7 +335,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     timestamp:    nowTimestamp,
     marshal:      marshal,
     marshalEmail: marshalEmail,
-    hole:         hole,
+    hole:         hole || "—",
     gps:          gpsCoords || "—",
     reportType:   rapportType,
     severity:     ernst || "Niet opgegeven",
