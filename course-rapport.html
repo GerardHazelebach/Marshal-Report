@@ -205,18 +205,18 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 <script>
 var WEBHOOK = "https://hook.eu1.make.com/grgvft8eqw4w7i5jvmyr69snc6zqm17q";
 
-var USERS = {
-  "000000": { name: "Secretariaat GCK",     role: "Secretariaat",        roleEn: "Secretariaat",      email: "info@golfclubkampenhout.be",                 lang: "nl" },
-  "129200": { name: "Andrew Bolton",        role: "Course Director",     roleEn: "Course Director",   email: "bolton.andrew@telenet.be",                   lang: "en" },
-  "361500": { name: "Gerard Hazelebach",    role: "Head Marshal",        roleEn: "Head Marshal",      email: "gerard.hazelebach@telenet.be",               lang: "nl" },
-  "999923": { name: "Marc De Graef",        role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)", email: "captain@golfclubkampenhout.com",             lang: "nl" },
-  "556570": { name: "Dirk Ibens",           role: "Herenkaptein",        roleEn: "Men's Captain",     email: "mens.captain@golfclubkampenhout.com",        lang: "nl" },
-  "006007": { name: "Karin Geens",          role: "Dameskaptein",        roleEn: "Ladies' Captain",   email: "ladies.captain@golfclubkampenhout.com",      lang: "nl" },
-  "553102": { name: "Luk Artois",           role: "Juniorkaptein",       roleEn: "Juniors Captain",   email: "juniors.captain@golfclubkampenhout.com",     lang: "nl" },
-  "191021": { name: "Peter Meurs",          role: "Starterskaptein",     roleEn: "Starters Captain",  email: "starters@golfclubkampenhout.com",            lang: "nl" },
-  "306050": { name: "Henk de Wyspelaere",   role: "Seniorenkaptein",     roleEn: "Seniors Captain",   email: "seniors.captain@golfclubkampenhout.com",     lang: "nl" },
-  "259600": { name: "Marc De Cock",         role: "Manager",             roleEn: "Manager",           email: "secretariaat@golfclubkampenhout.com",        lang: "nl" },
-  "180900": { name: "John Philip",          role: "Head Pro",            roleEn: "Head Pro",          email: "john.philip@telenet.be",                     lang: "en" }
+var PINS = {
+  "41e19e9beb0f1672f8e19f448c223f6a6dede9e8c54c26c24a6fc92dd336e612": { name: "Andrew Bolton", role: "Course Director", roleEn: "Course Director", email: "bolton.andrew@telenet.be", lang: "en" },
+  "68cdecf8bc680d5e200f41f7e16b555d5c71a055621cb91b1ac8a658d7d728d7": { name: "John Philip", role: "Head Pro", roleEn: "Head Pro", email: "john.philip@telenet.be", lang: "en" },
+  "0616a4c69b882127c84cbed7675ed9d3913de0cfc2c65d657069f533e80e6072": { name: "Peter Meurs", role: "Starterskaptein", roleEn: "Starters Captain", email: "starters@golfclubkampenhout.com", lang: "nl" },
+  "93e8f1b7fa342b74c01282456119af7cc1c5534ab01e5bf7a7c16ee9cc1f341b": { name: "Marc De Cock", role: "Manager", roleEn: "Manager", email: "secretariaat@golfclubkampenhout.com", lang: "nl" },
+  "fc706bbe5816435725093495f65d9c73e7a7a8a7a1ab743c6a761a647a847c51": { name: "Henk de Wyspelaere", role: "Seniorenkaptein", roleEn: "Seniors Captain", email: "seniors.captain@golfclubkampenhout.com", lang: "nl" },
+  "a5dac27af014a51719f84d3a92bf525f76d30955ad44e084fc9daea43782987c": { name: "Gerard Hazelebach", role: "Head Marshal", roleEn: "Head Marshal", email: "gerard.hazelebach@telenet.be", lang: "nl" },
+  "3be86a98cd856024826f8df897221916920aa2f3278a1ab15ad3ac22ce7da0d1": { name: "Luk Artois", role: "Juniorkaptein", roleEn: "Juniors Captain", email: "juniors.captain@golfclubkampenhout.com", lang: "nl" },
+  "3ffa40de02047ed5e15570d1689f1eb71dc6da1e61f36063590cb54aeb6ff762": { name: "Dirk Ibens", role: "Herenkaptein", roleEn: "Men's Captain", email: "mens.captain@golfclubkampenhout.com", lang: "nl" },
+  "12efcd91f8f166e04ba906034488e17e3ce6a5be0f411f56d5bad0044cc91a31": { name: "Marc De Graef", role: "Kapitein (Algemeen)", roleEn: "Captain (Overall)", email: "captain@golfclubkampenhout.com", lang: "nl" },
+  "91b4d142823f7d20c5f08df69122de43f35f057a988d9619f6d3138485c9a203": { name: "Secretariaat GCK", role: "Secretariaat", roleEn: "Secretariaat", email: "info@golfclubkampenhout.be", lang: "nl" },
+  "8ae6605849e1febb48c6f5d1213e217590be9231a375004b9dfc79bdeb02095e": { name: "Karin Geens", role: "Dameskaptein", roleEn: "Ladies' Captain", email: "ladies.captain@golfclubkampenhout.com", lang: "nl" }
 };
 
 var lang = 'nl';
@@ -276,11 +276,15 @@ function updateDate() {
 updateDate();
 setInterval(updateDate, 30000);
 
-function doPinCheck() {
+async function doPinCheck() {
   var pin = document.getElementById("pinInput").value.trim();
   var errEl = document.getElementById("pinError");
-  if (USERS[pin]) {
-    currentUser = USERS[pin];
+  var msgBuffer = new TextEncoder().encode(pin);
+  var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  var hashArray = Array.from(new Uint8Array(hashBuffer));
+  var hash = hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+  if (PINS[hash]) {
+    currentUser = PINS[hash];
     document.getElementById("userName").textContent = currentUser.name;
     document.getElementById("userRole").textContent = lang === 'nl' ? currentUser.role : currentUser.roleEn;
     document.getElementById("pinScreen").style.display = "none";
