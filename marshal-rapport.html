@@ -195,7 +195,8 @@ var marshalEmail = null;
 var hole = null;
 var rapportType = null;
 var ernst = null;
-var gpsCoords = null;
+var gpsLat = null;
+var gpsLng = null;
 var loginTime = null;
 
 // Datum
@@ -250,12 +251,11 @@ function getGPS() {
     return;
   }
   navigator.geolocation.getCurrentPosition(function(pos) {
-    var lat = pos.coords.latitude.toFixed(6);
-    var lng = pos.coords.longitude.toFixed(6);
-    gpsCoords = lat + ", " + lng;
-    document.getElementById("gpsInput").value = gpsCoords;
+    gpsLat = pos.coords.latitude.toFixed(6);
+    gpsLng = pos.coords.longitude.toFixed(6);
+    document.getElementById("gpsInput").value = gpsLat + ", " + gpsLng;
     document.getElementById("gpsInput").style.display = "block";
-    result.textContent = "✅ " + gpsCoords;
+    result.textContent = "✅ " + gpsLat + ", " + gpsLng;
     result.className = "gps-result found";
     btn.textContent = "📍 Vernieuwen";
     btn.disabled = false;
@@ -339,7 +339,8 @@ function submitReport() {
     marshal:      marshal,
     marshalEmail: marshalEmail,
     hole:         hole || "—",
-    gps:          gpsCoords || "—",
+    gpsLat:       gpsLat || "—",
+    gpsLng:       gpsLng || "—",
     reportType:   rapportType,
     severity:     ernst || "Laag",
     groupId:      document.getElementById("groupId").value.trim() || "—",
@@ -375,7 +376,7 @@ document.getElementById("newReportBtn").addEventListener("click", function() {
 });
 
 function resetForm() {
-  hole = null; rapportType = null; ernst = null; gpsCoords = null;
+  hole = null; rapportType = null; ernst = null; gpsLat = null; gpsLng = null;
   document.getElementById("groupId").value = "";
   document.getElementById("notes").value = "";
   document.getElementById("actionTaken").value = "";
