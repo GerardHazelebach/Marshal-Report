@@ -38,38 +38,22 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 8px 14px; border-radius: 50px; border: 1.5px solid #d5e0d8; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; color: var(--tm); cursor: pointer; transition: all 0.15s; }
 .chip.active { background: var(--gd); border-color: var(--gd); color: var(--w); }
-.prio-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.prio-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .prio-btn { padding: 10px 4px; border-radius: 10px; border: 1.5px solid #d5e0d8; background: var(--w); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; color: var(--tl); letter-spacing: 0.3px; }
 .prio-btn.low.active    { background: #e8f5e9; border-color: #4caf50; color: var(--low); }
 .prio-btn.med.active    { background: #fff8e1; border-color: #ffc107; color: var(--med); }
-.prio-btn.high.active   { background: #fff3e0; border-color: #ff9800; color: var(--high); }
 .prio-btn.urgent.active { background: #ffebee; border-color: #ef5350; color: var(--urgent); }
 .gps-row { display: flex; gap: 10px; align-items: center; }
 .gps-btn { flex-shrink: 0; padding: 12px 16px; background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; color: var(--gm); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .gps-result { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; color: var(--tl); flex: 1; }
 .gps-result.found { color: var(--gl); font-weight: 600; }
-
-/* ── Photo upload ─────────────────────────────────────────────────────────── */
-.photo-label {
-  display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px;
-  background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px;
-  color: var(--gm); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-}
+.photo-label { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; color: var(--gm); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; }
 .photo-label input[type="file"] { display: none; }
 .photo-preview { margin-top: 10px; display: none; }
-.photo-preview img {
-  width: 100%; max-height: 220px; object-fit: cover; border-radius: 10px;
-  border: 1.5px solid var(--gl);
-}
-.photo-remove {
-  margin-top: 6px; background: none; border: none; color: var(--tl);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0;
-}
-
+.photo-preview img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 10px; border: 1.5px solid var(--gl); }
+.photo-remove { margin-top: 6px; background: none; border: none; color: var(--tl); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; }
 .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gm), var(--gd)); color: var(--w); border: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; }
-.submit-btn:disabled { opacity: 0.6; }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .time-display { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: var(--tl); text-align: right; margin-bottom: 18px; }
 .user-badge { background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; padding: 10px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
 .user-badge strong { color: var(--gd); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
@@ -99,7 +83,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <button class="lang-btn active" onclick="setLang('nl')">NL</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
-  <div style="font-size:32px;margin-bottom:8px;">⛳</div>
+  <div style="font-size:32px;margin-bottom:8px;">&#9971;</div>
   <h1 data-nl="Baan Rapport" data-en="Course Report">Baan Rapport</h1>
   <p data-nl="Golf &amp; Business Association Kampenhout" data-en="Golf &amp; Business Association Kampenhout">Golf &amp; Business Association Kampenhout</p>
   <p id="dateDisplay" style="margin-top:8px;color:rgba(255,255,255,0.7);font-size:12px;letter-spacing:0;text-transform:none;font-family:-apple-system,sans-serif;"></p>
@@ -111,7 +95,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <h2 data-nl="Welkom" data-en="Welcome">Welkom</h2>
     <p data-nl="Voer uw pincode in" data-en="Enter your PIN">Voer uw pincode in</p>
     <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6"
-           id="pinInput" class="pin-input" placeholder="••••••" autocomplete="off">
+           id="pinInput" class="pin-input" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off">
     <button class="pin-btn" onclick="doPinCheck()" data-nl="Bevestigen" data-en="Confirm">Bevestigen</button>
     <div class="pin-error" id="pinError"></div>
   </div>
@@ -120,7 +104,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="time-display" id="timeDisplay"></div>
     <div class="user-badge">
       <div>
-        <strong>👤 <span id="userName"></span></strong><br>
+        <strong>&#128100; <span id="userName"></span></strong><br>
         <span id="userRole"></span>
       </div>
       <button id="logoutBtn" data-nl="Uitloggen" data-en="Log out">Uitloggen</button>
@@ -135,57 +119,55 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="field">
       <label data-nl="Specifieke locatie op de hole" data-en="Specific spot on hole">Specifieke locatie op de hole</label>
       <div class="chip-group" id="spotGroup">
-        <button class="chip" data-spot="Tee">🏌️ Tee</button>
-        <button class="chip" data-spot="Fairway">🌿 Fairway</button>
-        <button class="chip" data-spot="Rough">🌾 Rough</button>
-        <button class="chip" data-spot="Fairway Bunker">🏖️ Fairway Bunker</button>
-        <button class="chip" data-spot="Greenside Bunker">🏖️ Greenside Bunker</button>
-        <button class="chip" data-spot="Green">🟢 Green</button>
-        <button class="chip" data-spot="Pad/Weg" data-en-spot="Path/Road">🛤️ Pad/Weg</button>
-        <button class="chip" data-spot="Algemeen" data-en-spot="General">📍 Algemeen</button>
+        <button class="chip" data-spot="Tee">&#127933; Tee</button>
+        <button class="chip" data-spot="Fairway">&#127807; Fairway</button>
+        <button class="chip" data-spot="Rough">&#127806; Rough</button>
+        <button class="chip" data-spot="Fairway Bunker">&#127958; Fairway Bunker</button>
+        <button class="chip" data-spot="Greenside Bunker">&#127958; Greenside Bunker</button>
+        <button class="chip" data-spot="Green">&#128994; Green</button>
+        <button class="chip" data-spot="Pad/Weg" data-en-spot="Path/Road">&#128644; Pad/Weg</button>
+        <button class="chip" data-spot="Algemeen" data-en-spot="General">&#128205; Algemeen</button>
       </div>
     </div>
     <div class="field">
-      <label data-nl="GPS-coördinaat (optioneel)" data-en="GPS Coordinate (optional)">GPS-coördinaat (optioneel)</label>
+      <label data-nl="GPS-coordinaat (optioneel)" data-en="GPS Coordinate (optional)">GPS-coordinaat (optioneel)</label>
       <div class="gps-row">
-        <button class="gps-btn" id="gpsBtn" onclick="getGPS()" data-nl="📍 Locatie ophalen" data-en="📍 Get Location">📍 Locatie ophalen</button>
+        <button class="gps-btn" id="gpsBtn" onclick="getGPS()" data-nl="Locatie ophalen" data-en="Get Location">&#128205; Locatie ophalen</button>
         <span class="gps-result" id="gpsResult" data-nl="Nog niet opgehaald" data-en="Not yet retrieved">Nog niet opgehaald</span>
       </div>
       <input type="text" id="gpsInput" style="margin-top:8px;display:none;" placeholder="lat, lng" readonly>
     </div>
 
-    <!-- ── FOTO ─────────────────────────────────────────────────────────── -->
     <div class="field">
       <label data-nl="Foto toevoegen (optioneel)" data-en="Add photo (optional)">Foto toevoegen (optioneel)</label>
       <label class="photo-label">
         <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="handlePhoto(this)">
-        <span id="photoLabelText">📷 Kies of neem foto</span>
+        <span id="photoLabelText">&#128247; Kies of neem foto</span>
       </label>
       <div class="photo-preview" id="photoPreview">
         <img id="photoImg" src="" alt="Preview">
-        <button class="photo-remove" onclick="removePhoto()" data-nl="✕ Foto verwijderen" data-en="✕ Remove photo">✕ Foto verwijderen</button>
+        <button type="button" class="photo-remove" onclick="removePhoto()" data-nl="Foto verwijderen" data-en="Remove photo">&#10005; Foto verwijderen</button>
       </div>
     </div>
-    <!-- ───────────────────────────────────────────────────────────────── -->
 
     <div class="divider"></div>
 
     <div class="section-label" data-nl="Categorie *" data-en="Category *">Categorie <span style="color:var(--gold)">*</span></div>
     <div class="field">
       <div class="chip-group" id="catGroup">
-        <button class="chip" data-cat="Greens">🟢 Greens</button>
-        <button class="chip" data-cat="Fairway">🌿 Fairway</button>
-        <button class="chip" data-cat="Bunkers">🏖️ Bunkers</button>
-        <button class="chip" data-cat="Rough">🌾 Rough</button>
-        <button class="chip" data-cat="Paden/Wegen" data-en-cat="Paths/Roads">🛤️ Paden/Wegen</button>
-        <button class="chip" data-cat="Signalisatie" data-en-cat="Signage">🪧 Signalisatie</button>
-        <button class="chip" data-cat="Infrastructuur" data-en-cat="Infrastructure">🏠 Infrastructuur</button>
-        <button class="chip" data-cat="Bewatering" data-en-cat="Irrigation">💧 Bewatering</button>
-        <button class="chip" data-cat="Drainage" data-en-cat="Drainage">🌧️ Drainage</button>
-        <button class="chip" data-cat="Bomen/Struiken" data-en-cat="Trees/Shrubs">🌳 Bomen/Struiken</button>
-        <button class="chip" data-cat="Veiligheid" data-en-cat="Safety">⚠️ Veiligheid</button>
-        <button class="chip" data-cat="Suggestie" data-en-cat="Suggestion">💡 Suggestie</button>
-        <button class="chip" data-cat="Andere" data-en-cat="Other">📋 Andere</button>
+        <button class="chip" data-cat="Greens">&#128994; Greens</button>
+        <button class="chip" data-cat="Fairway">&#127807; Fairway</button>
+        <button class="chip" data-cat="Bunkers">&#127958; Bunkers</button>
+        <button class="chip" data-cat="Rough">&#127806; Rough</button>
+        <button class="chip" data-cat="Paden/Wegen" data-en-cat="Paths/Roads">&#128644; Paden/Wegen</button>
+        <button class="chip" data-cat="Signalisatie" data-en-cat="Signage">&#129351; Signalisatie</button>
+        <button class="chip" data-cat="Infrastructuur" data-en-cat="Infrastructure">&#127968; Infrastructuur</button>
+        <button class="chip" data-cat="Bewatering" data-en-cat="Irrigation">&#128167; Bewatering</button>
+        <button class="chip" data-cat="Drainage" data-en-cat="Drainage">&#127783; Drainage</button>
+        <button class="chip" data-cat="Bomen/Struiken" data-en-cat="Trees/Shrubs">&#127795; Bomen/Struiken</button>
+        <button class="chip" data-cat="Veiligheid" data-en-cat="Safety">&#9888; Veiligheid</button>
+        <button class="chip" data-cat="Suggestie" data-en-cat="Suggestion">&#128161; Suggestie</button>
+        <button class="chip" data-cat="Andere" data-en-cat="Other">&#128203; Andere</button>
       </div>
     </div>
     <div class="divider"></div>
@@ -193,9 +175,9 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="section-label" data-nl="Prioriteit *" data-en="Priority *">Prioriteit <span style="color:var(--gold)">*</span></div>
     <div class="field">
       <div class="prio-row">
-        <button class="prio-btn low" data-prio="Laag" data-nl="🟢 Laag" data-en="🟢 Low">🟢 Laag</button>
-        <button class="prio-btn med" data-prio="Gemiddeld" data-nl="🟡 Gemiddeld" data-en="🟡 Medium">🟡 Gemiddeld</button>
-        <button class="prio-btn urgent" data-prio="Hoog" data-nl="🔴 Hoog" data-en="🔴 High">🔴 Hoog</button>
+        <button class="prio-btn low" data-prio="Laag" data-nl="Laag" data-en="Low">&#128994; Laag</button>
+        <button class="prio-btn med" data-prio="Gemiddeld" data-nl="Gemiddeld" data-en="Medium">&#128993; Gemiddeld</button>
+        <button class="prio-btn urgent" data-prio="Hoog" data-nl="Hoog" data-en="High">&#128308; Hoog</button>
       </div>
     </div>
     <div class="divider"></div>
@@ -203,12 +185,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="section-label" data-nl="Details" data-en="Details">Details</div>
     <div class="field">
       <label data-nl="Beschrijving *" data-en="Description *">Beschrijving <span class="req">*</span></label>
-      <textarea id="description" data-nl-placeholder="Beschrijf het probleem of de suggestie duidelijk…" data-en-placeholder="Describe the issue or suggestion clearly…" placeholder="Beschrijf het probleem of de suggestie duidelijk…"></textarea>
+      <textarea id="description" data-nl-placeholder="Beschrijf het probleem of de suggestie duidelijk..." data-en-placeholder="Describe the issue or suggestion clearly..." placeholder="Beschrijf het probleem of de suggestie duidelijk..."></textarea>
     </div>
     <div class="field">
       <label data-nl="Voorgestelde actie (optioneel)" data-en="Suggested action (optional)">Voorgestelde actie (optioneel)</label>
       <select id="actionSuggested">
-        <option value="" data-nl="— Selecteer indien van toepassing —" data-en="— Select if applicable —">— Selecteer indien van toepassing —</option>
+        <option value="" data-nl="- Selecteer indien van toepassing -" data-en="- Select if applicable -">- Selecteer indien van toepassing -</option>
         <option data-nl="Dringende herstelling nodig" data-en="Urgent repair needed">Dringende herstelling nodig</option>
         <option data-nl="Onderhoud inplannen" data-en="Schedule planned maintenance">Onderhoud inplannen</option>
         <option data-nl="Inspectie vereist" data-en="Inspection required">Inspectie vereist</option>
@@ -218,11 +200,11 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
         <option data-nl="Anders (zie beschrijving)" data-en="Other (see description)">Anders (zie beschrijving)</option>
       </select>
     </div>
-    <button class="submit-btn" id="submitBtn" data-nl="Rapport verzenden →" data-en="Submit Report →">Rapport verzenden →</button>
+    <button class="submit-btn" id="submitBtn" type="button" data-nl="Rapport verzenden" data-en="Submit Report">Rapport verzenden &#8594;</button>
   </div>
 
   <div id="successScreen" class="success-screen">
-    <div class="success-icon">✅</div>
+    <div class="success-icon">&#9989;</div>
     <h2 data-nl="Rapport verzonden" data-en="Report Submitted">Rapport verzonden</h2>
     <p data-nl="Uw rapport is vastgelegd. Bedankt." data-en="Your report has been recorded. Thank you.">Uw rapport is vastgelegd. Bedankt.</p>
     <button class="new-report-btn" id="newReportBtn" data-nl="Nieuw rapport indienen" data-en="Submit New Report">Nieuw rapport indienen</button>
@@ -261,7 +243,7 @@ var selectedSpot = null;
 var selectedCat = null;
 var selectedPrio = null;
 var gpsCoords = null;
-var photoBase64 = null;  // ← NEW
+var photoBase64 = null;
 
 function setLang(l) {
   lang = l;
@@ -287,9 +269,9 @@ function setLang(l) {
     var emoji = c.textContent.split(' ')[0];
     c.textContent = emoji + ' ' + (l === 'en' ? c.getAttribute('data-en-cat') : c.getAttribute('data-cat'));
   });
-  // Photo label text
   if (!photoBase64) {
-    document.getElementById('photoLabelText').textContent = l === 'nl' ? '📷 Kies of neem foto' : '📷 Choose or take photo';
+    var lbl = document.getElementById('photoLabelText');
+    if (lbl) lbl.textContent = (l === 'nl' ? 'Kies of neem foto' : 'Choose or take photo');
   }
   updateDate();
 }
@@ -334,6 +316,7 @@ async function doPinCheck() {
     document.getElementById("pinInput").value = "";
   }
 }
+
 document.getElementById("pinInput").addEventListener("keydown", function(e) {
   if (e.key === "Enter") doPinCheck();
 });
@@ -346,11 +329,13 @@ document.getElementById("logoutBtn").addEventListener("click", function() {
   resetForm();
 });
 
+// Hole grid
 var holeGrid = document.getElementById("holeGrid");
 for (var i = 1; i <= 18; i++) {
   (function(n) {
     var btn = document.createElement("button");
     btn.className = "hole-btn";
+    btn.type = "button";
     btn.textContent = n;
     btn.addEventListener("click", function() {
       document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
@@ -362,38 +347,35 @@ for (var i = 1; i <= 18; i++) {
 }
 
 var genBtn = document.createElement("button");
-genBtn.className = "hole-btn general";
-genBtn.setAttribute("data-nl", "🏠 Algemeen / Clubhuis");
-genBtn.setAttribute("data-en", "🏠 General / Clubhouse");
-genBtn.textContent = "🏠 Algemeen / Clubhuis";
+genBtn.className = "hole-btn general"; genBtn.type = "button";
+genBtn.setAttribute("data-nl", "Algemeen / Clubhuis");
+genBtn.setAttribute("data-en", "General / Clubhouse");
+genBtn.textContent = "Algemeen / Clubhuis";
 genBtn.addEventListener("click", function() {
   document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
-  genBtn.classList.add("active");
-  selectedHole = "Algemeen/Clubhuis";
+  genBtn.classList.add("active"); selectedHole = "Algemeen/Clubhuis";
 });
 holeGrid.appendChild(genBtn);
 
 var drBtn = document.createElement("button");
-drBtn.className = "hole-btn general";
-drBtn.setAttribute("data-nl", "🎯 Driving Range");
-drBtn.setAttribute("data-en", "🎯 Driving Range");
-drBtn.textContent = "🎯 Driving Range";
+drBtn.className = "hole-btn general"; drBtn.type = "button";
+drBtn.setAttribute("data-nl", "Driving Range");
+drBtn.setAttribute("data-en", "Driving Range");
+drBtn.textContent = "Driving Range";
 drBtn.addEventListener("click", function() {
   document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
-  drBtn.classList.add("active");
-  selectedHole = "Driving Range";
+  drBtn.classList.add("active"); selectedHole = "Driving Range";
 });
 holeGrid.appendChild(drBtn);
 
 var phBtn = document.createElement("button");
-phBtn.className = "hole-btn general";
-phBtn.setAttribute("data-nl", "⛳ Oefenholes");
-phBtn.setAttribute("data-en", "⛳ Practice Holes");
-phBtn.textContent = "⛳ Oefenholes";
+phBtn.className = "hole-btn general"; phBtn.type = "button";
+phBtn.setAttribute("data-nl", "Oefenholes");
+phBtn.setAttribute("data-en", "Practice Holes");
+phBtn.textContent = "Oefenholes";
 phBtn.addEventListener("click", function() {
   document.querySelectorAll(".hole-btn").forEach(function(b) { b.classList.remove("active"); });
-  phBtn.classList.add("active");
-  selectedHole = "Oefenholes";
+  phBtn.classList.add("active"); selectedHole = "Oefenholes";
 });
 holeGrid.appendChild(phBtn);
 
@@ -424,10 +406,10 @@ document.querySelectorAll(".prio-btn").forEach(function(btn) {
 function getGPS() {
   var btn = document.getElementById("gpsBtn");
   var result = document.getElementById("gpsResult");
-  btn.textContent = lang === 'nl' ? "⏳ Ophalen…" : "⏳ Retrieving…";
+  btn.textContent = lang === 'nl' ? "Ophalen..." : "Retrieving...";
   if (!navigator.geolocation) {
     result.textContent = lang === 'nl' ? "GPS niet beschikbaar" : "GPS not available";
-    btn.textContent = lang === 'nl' ? "📍 Locatie ophalen" : "📍 Get Location";
+    btn.textContent = lang === 'nl' ? "Locatie ophalen" : "Get Location";
     return;
   }
   navigator.geolocation.getCurrentPosition(function(pos) {
@@ -436,16 +418,16 @@ function getGPS() {
     gpsCoords = lat + ", " + lng;
     document.getElementById("gpsInput").value = gpsCoords;
     document.getElementById("gpsInput").style.display = "block";
-    result.textContent = "✅ " + gpsCoords;
+    result.textContent = "OK " + gpsCoords;
     result.className = "gps-result found";
-    btn.textContent = lang === 'nl' ? "📍 Vernieuwen" : "📍 Refresh";
+    btn.textContent = lang === 'nl' ? "Vernieuwen" : "Refresh";
   }, function() {
     result.textContent = lang === 'nl' ? "Locatie niet beschikbaar" : "Location unavailable";
-    btn.textContent = lang === 'nl' ? "📍 Locatie ophalen" : "📍 Get Location";
+    btn.textContent = lang === 'nl' ? "Locatie ophalen" : "Get Location";
   });
 }
 
-// ── Photo handling ──────────────────────────────────────────────────────────
+// Photo handling
 function handlePhoto(input) {
   if (!input.files || !input.files[0]) return;
   var file = input.files[0];
@@ -453,7 +435,6 @@ function handlePhoto(input) {
   reader.onload = function(e) {
     var img = new Image();
     img.onload = function() {
-      // Compress: max 800px wide, JPEG quality 0.75 (~100-200KB)
       var maxW = 800;
       var ratio = Math.min(1, maxW / img.width);
       var canvas = document.createElement('canvas');
@@ -462,10 +443,9 @@ function handlePhoto(input) {
       var ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       photoBase64 = canvas.toDataURL('image/jpeg', 0.75);
-      // Show preview
       document.getElementById('photoImg').src = photoBase64;
       document.getElementById('photoPreview').style.display = 'block';
-      document.getElementById('photoLabelText').textContent = lang === 'nl' ? '📷 Foto wijzigen' : '📷 Change photo';
+      document.getElementById('photoLabelText').textContent = lang === 'nl' ? 'Foto wijzigen' : 'Change photo';
     };
     img.src = e.target.result;
   };
@@ -474,12 +454,15 @@ function handlePhoto(input) {
 
 function removePhoto() {
   photoBase64 = null;
-  document.getElementById('photoInput').value = '';
-  document.getElementById('photoPreview').style.display = 'none';
-  document.getElementById('photoImg').src = '';
-  document.getElementById('photoLabelText').textContent = lang === 'nl' ? '📷 Kies of neem foto' : '📷 Choose or take photo';
+  var pi = document.getElementById('photoInput');
+  if (pi) { try { pi.value = ''; } catch(e) {} }
+  var pp = document.getElementById('photoPreview');
+  if (pp) pp.style.display = 'none';
+  var pm = document.getElementById('photoImg');
+  if (pm) pm.src = '';
+  var pl = document.getElementById('photoLabelText');
+  if (pl) pl.textContent = lang === 'nl' ? 'Kies of neem foto' : 'Choose or take photo';
 }
-// ────────────────────────────────────────────────────────────────────────────
 
 document.getElementById("submitBtn").addEventListener("click", function() {
   var description = document.getElementById("description").value.trim();
@@ -490,7 +473,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
 
   var btn = document.getElementById("submitBtn");
   btn.disabled = true;
-  btn.textContent = lang === 'nl' ? "Verzenden…" : "Submitting…";
+  btn.textContent = lang === 'nl' ? "Verzenden..." : "Submitting...";
 
   var payload = {
     timestamp:     new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T'),
@@ -499,14 +482,14 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     role:          currentUser.role,
     language:      lang.toUpperCase(),
     hole:          selectedHole,
-    spot:          selectedSpot || "—",
-    gpsLat:        gpsCoords ? gpsCoords.split(", ")[0] : "—",
-    gpsLng:        gpsCoords ? gpsCoords.split(", ")[1] : "—",
+    spot:          selectedSpot || "-",
+    gpsLat:        gpsCoords ? gpsCoords.split(", ")[0] : "-",
+    gpsLng:        gpsCoords ? gpsCoords.split(", ")[1] : "-",
     category:      selectedCat,
     priority:      selectedPrio,
     description:   description,
-    action:        document.getElementById("actionSuggested").value || "—",
-    photo:         photoBase64 || ""   // ← NEW: base64 JPEG or empty string
+    action:        document.getElementById("actionSuggested").value || "-",
+    photo:         photoBase64 || ""
   };
 
   fetch(WEBHOOK, {
@@ -519,7 +502,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
   }).catch(function() {
     alert(lang === 'nl' ? "Kon niet verzenden. Controleer uw internetverbinding." : "Could not submit. Check your internet connection.");
     btn.disabled = false;
-    btn.textContent = lang === 'nl' ? "Rapport verzenden →" : "Submit Report →";
+    btn.textContent = lang === 'nl' ? "Rapport verzenden" : "Submit Report";
   });
 });
 
@@ -534,21 +517,22 @@ document.getElementById("newReportBtn").addEventListener("click", function() {
   resetForm();
   document.getElementById("formScreen").style.display = "block";
   document.getElementById("successScreen").classList.remove("visible");
-  document.getElementById("submitBtn").disabled = false;
-  document.getElementById("submitBtn").textContent = lang === 'nl' ? "Rapport verzenden →" : "Submit Report →";
+  var btn = document.getElementById("submitBtn");
+  btn.disabled = false;
+  btn.textContent = lang === 'nl' ? "Rapport verzenden" : "Submit Report";
 });
 
 function resetForm() {
   selectedHole = null; selectedSpot = null; selectedCat = null; selectedPrio = null; gpsCoords = null;
   document.getElementById("description").value = "";
   document.getElementById("actionSuggested").value = "";
-  document.getElementById("gpsInput").value = "";
-  document.getElementById("gpsInput").style.display = "none";
-  document.getElementById("gpsResult").textContent = lang === 'nl' ? "Nog niet opgehaald" : "Not yet retrieved";
-  document.getElementById("gpsResult").className = "gps-result";
-  document.getElementById("gpsBtn").textContent = lang === 'nl' ? "📍 Locatie ophalen" : "📍 Get Location";
+  var gi = document.getElementById("gpsInput");
+  if (gi) { gi.value = ""; gi.style.display = "none"; }
+  var gr = document.getElementById("gpsResult");
+  if (gr) { gr.textContent = lang === 'nl' ? "Nog niet opgehaald" : "Not yet retrieved"; gr.className = "gps-result"; }
+  var gb = document.getElementById("gpsBtn");
+  if (gb) gb.textContent = lang === 'nl' ? "Locatie ophalen" : "Get Location";
   document.querySelectorAll(".hole-btn,.chip,.prio-btn").forEach(function(b) { b.classList.remove("active"); });
-  // Reset photo
   removePhoto();
 }
 </script>
