@@ -70,7 +70,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 <body>
 
 <div class="header">
-  <div style="font-size:32px;margin-bottom:8px;">⛳</div>
+  <div style="font-size:32px;margin-bottom:8px;">&#9971;</div>
   <h1>Baan Marshal Rapport</h1>
   <p id="dateDisplay">Datum laden...</p>
 </div>
@@ -82,7 +82,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <h2>Welkom</h2>
     <p>Voer uw 6-cijferige pincode in</p>
     <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6"
-           id="pinInput" class="pin-input" placeholder="••••••" autocomplete="off">
+           id="pinInput" class="pin-input" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off">
     <button class="pin-btn" id="pinBtn" onclick="doPinCheck()">Bevestigen</button>
     <div class="pin-error" id="pinError"></div>
   </div>
@@ -91,7 +91,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
   <div id="formScreen" style="display:none;">
     <div class="time-display" id="timeDisplay"></div>
     <div class="marshal-badge">
-      <strong>👤 <span id="marshalName"></span></strong>
+      <strong>&#128100; <span id="marshalName"></span></strong>
       <button id="logoutBtn">Uitloggen</button>
     </div>
     <div class="divider"></div>
@@ -102,9 +102,9 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
       <div class="hole-grid" id="holeGrid"></div>
     </div>
     <div class="field">
-      <label>GPS-coördinaat <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
+      <label>GPS-co&#246;rdinaat <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
       <div class="gps-row">
-        <button class="gps-btn" id="gpsBtn" onclick="getGPS()">📍 Locatie ophalen</button>
+        <button class="gps-btn" id="gpsBtn" onclick="getGPS()">&#128205; Locatie ophalen</button>
         <span class="gps-result" id="gpsResult">Nog niet opgehaald</span>
       </div>
       <input type="text" id="gpsInput" style="margin-top:8px;display:none;" placeholder="lat, lng" readonly>
@@ -114,15 +114,15 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="section-label">Rapporttype <span class="req">*</span></div>
     <div class="field">
       <div class="chip-group" id="chipGroup">
-        <button class="chip" data-type="Start Marshallen">🟢 Start Marshallen</button>
-        <button class="chip" data-type="Speelritme">⏱️ Speelritme</button>
-        <button class="chip" data-type="Langzame groep">🐢 Langzame groep</button>
-        <button class="chip" data-type="Gedrag speler">⚠️ Gedrag speler</button>
-        <button class="chip" data-type="Incident">🚨 Incident</button>
-        <button class="chip" data-type="Baanconditie">🌿 Baanconditie</button>
-        <button class="chip" data-type="Gevaar">⛔ Gevaar</button>
-        <button class="chip" data-type="No Show">🚫 No Show</button>
-        <button class="chip" data-type="Speler gestopt">🛑 Speler gestopt</button>
+        <button class="chip" data-type="Start Marshallen">&#128994; Start Marshallen</button>
+        <button class="chip" data-type="Speelritme">&#9201;&#65039; Speelritme</button>
+        <button class="chip" data-type="Langzame groep">&#128034; Langzame groep</button>
+        <button class="chip" data-type="Gedrag speler">&#9888;&#65039; Gedrag speler</button>
+        <button class="chip" data-type="Incident">&#128680; Incident</button>
+        <button class="chip" data-type="Baanconditie">&#127807; Baanconditie</button>
+        <button class="chip" data-type="Gevaar">&#9940; Gevaar</button>
+        <button class="chip" data-type="No Show">&#128683; No Show</button>
+        <button class="chip" data-type="Speler gestopt">&#128721; Speler gestopt</button>
       </div>
     </div>
     <div class="divider"></div>
@@ -131,39 +131,39 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     <div class="field">
       <label>Ernst</label>
       <div class="sev-row">
-        <button class="sev-btn low" data-sev="Laag">🟢 Laag</button>
-        <button class="sev-btn med" data-sev="Gemiddeld">🟡 Gemiddeld</button>
-        <button class="sev-btn high" data-sev="Hoog">🔴 Hoog</button>
+        <button class="sev-btn low" data-sev="Laag">&#128994; Laag</button>
+        <button class="sev-btn med" data-sev="Gemiddeld">&#128993; Gemiddeld</button>
+        <button class="sev-btn high" data-sev="Hoog">&#128308; Hoog</button>
       </div>
     </div>
     <div class="field">
-      <label>Groep / Buggy ID <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
-      <input type="text" id="groupId" placeholder="bijv. Buggy 12…" inputmode="numeric">
+      <label>Flightnummer <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
+      <input type="text" id="groupId" placeholder="bijv. Flight 3..." inputmode="numeric">
     </div>
     <div class="field">
       <label>Opmerkingen <span class="req">*</span></label>
-      <textarea id="notes" placeholder="Beschrijf de situatie duidelijk…"></textarea>
+      <textarea id="notes" placeholder="Beschrijf de situatie duidelijk&#8230;"></textarea>
     </div>
     <div class="field">
       <label>Ondernomen actie <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
       <select id="actionTaken">
-        <option value="">— Selecteer indien van toepassing —</option>
+        <option value="">&#8212; Selecteer indien van toepassing &#8212;</option>
         <option>Mondelinge waarschuwing gegeven</option>
         <option>Groep gevraagd sneller te spelen</option>
         <option>Groep gevraagd een hole over te slaan</option>
         <option>Gemeld bij Secretariaat</option>
         <option>Gevaar gemeld</option>
         <option>Onderhoud gebeld</option>
-        <option>Geen actie — in de gaten houden</option>
+        <option>Geen actie &#8212; in de gaten houden</option>
         <option>Anders (zie opmerkingen)</option>
       </select>
     </div>
-    <button class="submit-btn" id="submitBtn">Rapport verzenden →</button>
+    <button class="submit-btn" id="submitBtn">Rapport verzenden &#8594;</button>
   </div>
 
   <!-- BEVESTIGING -->
   <div id="successScreen" class="success-screen">
-    <div class="success-icon">✅</div>
+    <div class="success-icon">&#9989;</div>
     <h2>Rapport verzonden</h2>
     <p>Uw rapport is vastgelegd. Bedankt.</p>
     <button class="new-report-btn" id="newReportBtn">Nieuw rapport indienen</button>
@@ -199,7 +199,6 @@ var gpsLat = null;
 var gpsLng = null;
 var loginTime = null;
 
-// Datum
 function updateDate() {
   var now = new Date();
   var dagen = ["zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"];
@@ -212,7 +211,6 @@ function updateDate() {
 updateDate();
 setInterval(updateDate, 30000);
 
-// PIN
 async function doPinCheck() {
   var pin = document.getElementById("pinInput").value.trim();
   var msgBuffer = new TextEncoder().encode(pin);
@@ -238,15 +236,14 @@ document.getElementById("pinInput").addEventListener("keydown", function(e) {
   if (e.key === "Enter") doPinCheck();
 });
 
-// GPS
 function getGPS() {
   var btn = document.getElementById("gpsBtn");
   var result = document.getElementById("gpsResult");
-  btn.textContent = "⏳ Ophalen…";
+  btn.textContent = "&#9203; Ophalen\u2026";
   btn.disabled = true;
   if (!navigator.geolocation) {
     result.textContent = "GPS niet beschikbaar";
-    btn.textContent = "📍 Locatie ophalen";
+    btn.textContent = "&#128205; Locatie ophalen";
     btn.disabled = false;
     return;
   }
@@ -255,18 +252,17 @@ function getGPS() {
     gpsLng = pos.coords.longitude.toFixed(6);
     document.getElementById("gpsInput").value = gpsLat + ", " + gpsLng;
     document.getElementById("gpsInput").style.display = "block";
-    result.textContent = "✅ " + gpsLat + ", " + gpsLng;
+    result.textContent = "OK " + gpsLat + ", " + gpsLng;
     result.className = "gps-result found";
-    btn.textContent = "📍 Vernieuwen";
+    btn.textContent = "&#128205; Vernieuwen";
     btn.disabled = false;
   }, function() {
     result.textContent = "Locatie niet beschikbaar";
-    btn.textContent = "📍 Locatie ophalen";
+    btn.textContent = "&#128205; Locatie ophalen";
     btn.disabled = false;
   }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
-// Uitloggen
 document.getElementById("logoutBtn").addEventListener("click", function() {
   marshal = null; marshalEmail = null; hole = null; rapportType = null; ernst = null; loginTime = null;
   document.getElementById("pinScreen").style.display = "block";
@@ -282,7 +278,6 @@ document.getElementById("logoutSuccessBtn").addEventListener("click", function()
   resetForm();
 });
 
-// Hole grid
 var holeGrid = document.getElementById("holeGrid");
 for (var i = 1; i <= 18; i++) {
   (function(n) {
@@ -298,7 +293,6 @@ for (var i = 1; i <= 18; i++) {
   })(i);
 }
 
-// Chips
 document.querySelectorAll(".chip").forEach(function(chip) {
   chip.addEventListener("click", function() {
     document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
@@ -310,7 +304,6 @@ document.querySelectorAll(".chip").forEach(function(chip) {
   });
 });
 
-// Ernst
 document.querySelectorAll(".sev-btn").forEach(function(btn) {
   btn.addEventListener("click", function() {
     document.querySelectorAll(".sev-btn").forEach(function(b) { b.classList.remove("active"); });
@@ -319,7 +312,6 @@ document.querySelectorAll(".sev-btn").forEach(function(btn) {
   });
 });
 
-// Verzenden
 function submitReport() {
   var isStartShift = (rapportType === "Start Marshallen");
   var notes = document.getElementById("notes").value.trim();
@@ -330,7 +322,7 @@ function submitReport() {
 
   var btn = document.getElementById("submitBtn");
   btn.disabled = true;
-  btn.textContent = "Verzenden…";
+  btn.textContent = "Verzenden\u2026";
 
   var nowTimestamp = new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Brussels'}).replace(' ', 'T');
 
@@ -338,15 +330,15 @@ function submitReport() {
     timestamp:    nowTimestamp,
     marshal:      marshal,
     marshalEmail: marshalEmail,
-    hole:         hole || "—",
-    gpsLat:       gpsLat || "—",
-    gpsLng:       gpsLng || "—",
+    hole:         hole || "\u2014",
+    gpsLat:       gpsLat || "\u2014",
+    gpsLng:       gpsLng || "\u2014",
     reportType:   rapportType,
     severity:     ernst || "Laag",
-    groupId:      document.getElementById("groupId").value.trim() || "—",
+    groupId:      document.getElementById("groupId").value.trim() || "\u2014",
     notes:        notes,
     action:       document.getElementById("actionTaken").value || "Geen actie vastgelegd",
-    loginTime:    loginTime || "—",
+    loginTime:    loginTime || "\u2014",
     logoutTime:   nowTimestamp
   };
 
@@ -360,19 +352,18 @@ function submitReport() {
   }).catch(function() {
     alert("Kon niet verzenden. Controleer uw internetverbinding.");
     btn.disabled = false;
-    btn.textContent = "Rapport verzenden →";
+    btn.textContent = "Rapport verzenden \u2192";
   });
 }
 
 document.getElementById("submitBtn").addEventListener("click", submitReport);
 
-// Nieuw rapport
 document.getElementById("newReportBtn").addEventListener("click", function() {
   resetForm();
   document.getElementById("formScreen").style.display = "block";
   document.getElementById("successScreen").classList.remove("visible");
   document.getElementById("submitBtn").disabled = false;
-  document.getElementById("submitBtn").textContent = "Rapport verzenden →";
+  document.getElementById("submitBtn").textContent = "Rapport verzenden \u2192";
 });
 
 function resetForm() {
@@ -384,7 +375,7 @@ function resetForm() {
   document.getElementById("gpsInput").style.display = "none";
   document.getElementById("gpsResult").textContent = "Nog niet opgehaald";
   document.getElementById("gpsResult").className = "gps-result";
-  document.getElementById("gpsBtn").textContent = "📍 Locatie ophalen";
+  document.getElementById("gpsBtn").textContent = "&#128205; Locatie ophalen";
   document.querySelectorAll(".hole-btn,.chip,.sev-btn").forEach(function(b) { b.classList.remove("active"); });
 }
 </script>
