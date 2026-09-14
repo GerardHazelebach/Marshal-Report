@@ -65,6 +65,16 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 .pin-input { width: 100%; max-width: 220px; padding: 14px; font-size: 24px; letter-spacing: 8px; text-align: center; border: 2px solid var(--gl); border-radius: 12px; background: var(--w); color: var(--gd); font-weight: 700; display: block; margin: 0 auto 16px; }
 .pin-btn { display: block; width: 100%; max-width: 220px; margin: 0 auto; padding: 14px; background: linear-gradient(135deg, var(--gm), var(--gd)); color: var(--w); border: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; }
 .pin-error { color: #c62828; font-size: 13px; margin-top: 12px; min-height: 18px; }
+
+/* FOTO */
+.photo-field { display: none; }
+.photo-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; background: var(--gp); border: 1.5px solid var(--gl); border-radius: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; color: var(--gd); cursor: pointer; }
+.photo-hint { font-size: 12px; color: var(--tl); margin-top: 6px; }
+.photo-preview-wrap { margin-top: 12px; position: relative; display: none; }
+.photo-preview-wrap.visible { display: inline-block; }
+.photo-preview { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1.5px solid #d5e0d8; display: block; }
+.photo-remove { margin-top: 8px; background: none; border: none; color: #c62828; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; }
+.photo-status { font-size: 12px; color: var(--tl); margin-top: 6px; }
 </style>
 </head>
 <body>
@@ -144,6 +154,21 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
       <label>Opmerkingen <span class="req">*</span></label>
       <textarea id="notes" placeholder="Beschrijf de situatie duidelijk&#8230;"></textarea>
     </div>
+
+    <!-- FOTO: enkel zichtbaar bij Incident of Baanconditie -->
+    <div class="field photo-field" id="photoField">
+      <label>Foto <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
+      <input type="file" id="photoInput" accept="image/*" style="display:none;">
+      <button type="button" class="photo-btn" id="photoBtn">&#128247; Foto toevoegen</button>
+      <div class="photo-hint">Maak een nieuwe foto of kies er een uit uw gallerij.</div>
+      <div class="photo-status" id="photoStatus"></div>
+      <div class="photo-preview-wrap" id="photoPreviewWrap">
+        <img class="photo-preview" id="photoPreview" alt="Voorbeeld van geselecteerde foto">
+        <br>
+        <button type="button" class="photo-remove" id="photoRemoveBtn">Foto verwijderen</button>
+      </div>
+    </div>
+
     <div class="field">
       <label>Ondernomen actie <span style="font-weight:300;color:var(--tl)">(optioneel)</span></label>
       <select id="actionTaken">
@@ -197,6 +222,10 @@ var ernst = null;
 var gpsLat = null;
 var gpsLng = null;
 var loginTime = null;
+var photoBase64 = null;
+
+// Rapporttypes waarvoor de fotomogelijkheid getoond wordt
+var PHOTO_TYPES = ["Incident", "Baanconditie"];
 
 function updateDate() {
   var now = new Date();
@@ -297,11 +326,22 @@ document.querySelectorAll(".chip").forEach(function(chip) {
     document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
     chip.classList.add("active");
     rapportType = chip.getAttribute("data-type");
+    updatePhotoFieldVisibility();
     if (rapportType === "Start Marshallen") {
       submitReport();
     }
   });
 });
+
+function updatePhotoFieldVisibility() {
+  var photoField = document.getElementById("photoField");
+  if (PHOTO_TYPES.indexOf(rapportType) !== -1) {
+    photoField.style.display = "block";
+  } else {
+    photoField.style.display = "none";
+    clearPhoto();
+  }
+}
 
 document.querySelectorAll(".sev-btn").forEach(function(btn) {
   btn.addEventListener("click", function() {
@@ -310,6 +350,64 @@ document.querySelectorAll(".sev-btn").forEach(function(btn) {
     ernst = btn.getAttribute("data-sev");
   });
 });
+
+// ---- FOTO: selectie, compressie (800px breed, JPEG 75%), voorbeeld ----
+
+document.getElementById("photoBtn").addEventListener("click", function() {
+  document.getElementById("photoInput").click();
+});
+
+document.getElementById("photoInput").addEventListener("change", function(e) {
+  var file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  var statusEl = document.getElementById("photoStatus");
+  statusEl.textContent = "Foto verwerken\u2026";
+
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var img = new Image();
+    img.onload = function() {
+      var maxWidth = 800;
+      var scale = Math.min(1, maxWidth / img.width);
+      var targetW = Math.round(img.width * scale);
+      var targetH = Math.round(img.height * scale);
+
+      var canvas = document.createElement("canvas");
+      canvas.width = targetW;
+      canvas.height = targetH;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, targetW, targetH);
+
+      photoBase64 = canvas.toDataURL("image/jpeg", 0.75);
+
+      var previewImg = document.getElementById("photoPreview");
+      previewImg.src = photoBase64;
+      document.getElementById("photoPreviewWrap").classList.add("visible");
+      statusEl.textContent = "Foto toegevoegd.";
+    };
+    img.onerror = function() {
+      statusEl.textContent = "Kon de foto niet lezen. Probeer opnieuw.";
+    };
+    img.src = ev.target.result;
+  };
+  reader.onerror = function() {
+    statusEl.textContent = "Kon de foto niet lezen. Probeer opnieuw.";
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("photoRemoveBtn").addEventListener("click", function() {
+  clearPhoto();
+});
+
+function clearPhoto() {
+  photoBase64 = null;
+  document.getElementById("photoInput").value = "";
+  document.getElementById("photoPreview").src = "";
+  document.getElementById("photoPreviewWrap").classList.remove("visible");
+  document.getElementById("photoStatus").textContent = "";
+}
 
 function submitReport() {
   var isStartShift = (rapportType === "Start Marshallen");
@@ -337,6 +435,7 @@ function submitReport() {
     groupId:      document.getElementById("groupId").value.trim() || "\u2014",
     notes:        notes,
     action:       document.getElementById("actionTaken").value || "Geen actie vastgelegd",
+    photo:        photoBase64 || "",
     loginTime:    loginTime || "\u2014",
     logoutTime:   nowTimestamp
   };
@@ -376,6 +475,8 @@ function resetForm() {
   document.getElementById("gpsResult").className = "gps-result";
   document.getElementById("gpsBtn").textContent = "&#128205; Locatie ophalen";
   document.querySelectorAll(".hole-btn,.chip,.sev-btn").forEach(function(b) { b.classList.remove("active"); });
+  clearPhoto();
+  document.getElementById("photoField").style.display = "none";
 }
 </script>
 </body>
